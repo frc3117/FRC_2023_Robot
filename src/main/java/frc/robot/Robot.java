@@ -4,7 +4,15 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
+import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
+import frc.robot.SubSystems.LinearRobotArm;
+import frc.robot.SubSystems.Data.LinearRobotArmData;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -12,56 +20,115 @@ import frc.robot.Library.FRC_3117_Tools.RobotBase;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends RobotBase {
+public class Robot extends RobotBase 
+{
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  @Override
-  public void robotInit() {}
+  
+   public LinearRobotArm RobotArm;
 
   @Override
-  public void robotPeriodic() {}
+  public void robotInit() 
+  {
+    super.robotInit();
+  }
 
   @Override
-  public void autonomousInit() {}
+  public void robotPeriodic() 
+  {
+    super.robotPeriodic();
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousInit() 
+  {
+    super.autonomousInit();
+  }
 
   @Override
-  public void teleopInit() {}
+  public void autonomousPeriodic() 
+  {
+    super.autonomousPeriodic();
+  }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopInit() 
+  {
+    super.teleopInit();
+  }
 
   @Override
-  public void disabledInit() {}
+  public void teleopPeriodic() 
+  {
+    super.teleopPeriodic();
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledInit() 
+  {
+    super.disabledInit();
+  }
 
   @Override
-  public void testInit() {}
+  public void disabledPeriodic() 
+  {
+    super.disabledPeriodic();
+  }
 
   @Override
-  public void testPeriodic() {}
+  public void testInit() 
+  {
+    super.testInit();
+  }
 
   @Override
-  public void simulationInit() {}
+  public void testPeriodic() 
+  {
+    super.testPeriodic();
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationInit() 
+  {
+    super.simulationInit();
+  }
+
+  @Override
+  public void simulationPeriodic() 
+  {
+    super.simulationPeriodic();
+  }
 
   @Override
   public void CreateComponentInstance()
   {
+    //Robot Arm
+    var armData = new LinearRobotArmData();
+ 
+    armData.VerticalTranslationController = new CANSparkMax(10, MotorType.kBrushed); //1
+    armData.ArmRotationController = new WPI_TalonSRX(9); //2
+    armData.WristRotationController = new WPI_TalonSRX(8); //3
 
+    armData.VerticalTranslationEncoder = new AnalogEncoder(0);
+    armData.ArmRotationEncoder = new AnalogEncoder(1);
+    armData.WristRotationEncoder = new AnalogEncoder(2);
+
+    RobotArm = new LinearRobotArm(armData);
+    AddComponent("RobotArm", RobotArm);
   }
 
   @Override
   public void CreateInput()
   {
+    Input.CreateAxis("VerticalTranslation", 0, Input.XboxAxis.RIGHT_TRIGGER, false);
+    Input.SetAxisNegative("VerticalTranslation", 0, Input.XboxAxis.LEFT_TRIGGER, false);
 
+    Input.CreateAxis("ArmRotation", 0, Input.XboxAxis.RIGHTY, false);
+    Input.SetAxisDeadzone("ArmRotation", 0.15);
+
+    Input.CreateAxis("WristRotation", 0, Input.XboxAxis.LEFTY, false);
+    Input.SetAxisDeadzone("WristRotation", 0.15);
   }
 }
