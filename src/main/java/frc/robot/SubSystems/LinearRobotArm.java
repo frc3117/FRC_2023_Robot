@@ -1,5 +1,8 @@
 package frc.robot.SubSystems;
 
+import javax.xml.crypto.Data;
+
+import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.InputManager;
 import frc.robot.Library.FRC_3117_Tools.Interface.Component;
 import frc.robot.SubSystems.Data.LinearRobotArmData;
@@ -37,12 +40,17 @@ public class LinearRobotArm implements Component
         var verticalTranslationAxis = InputManager.GetAxis("VerticalTranslation");
         var armRotationAxis = InputManager.GetAxis("ArmRotation");
         var wristRotationAxis = InputManager.GetAxis("WristRotation");
+        
 
-        Data.VerticalTranslationController.set(0.2 * verticalTranslationAxis);
-        Data.ArmRotationController.set(0.2 * armRotationAxis);
-        Data.WristRotationController.set(0.2 * wristRotationAxis);
-    
-        System.out.println("Test");
+        Data.VerticalTranslationController.set(verticalTranslationAxis * 0.5);
+        Data.ArmRotationController.set(armRotationAxis * 0.5);
+        Data.WristRotationController.set(wristRotationAxis * 0.5);
+        
+        var verticalTranslationDistance = (Data.VerticalTranslationEncoder.get() / RobotController.getVoltage5V());
+        var armRotationAngle = (Data.ArmRotationEncoder.get() / RobotController.getVoltage5V()) * 2 * Math.PI;
+        var wristRotationAngle = (Data.WristRotationEncoder.get() / RobotController.getVoltage5V()) * 2 * Math.PI;
+       
+        System.out.println(armRotationAngle);
     }
     
 }

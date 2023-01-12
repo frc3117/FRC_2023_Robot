@@ -5,8 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
@@ -107,7 +105,7 @@ public class Robot extends RobotBase
     //Robot Arm
     var armData = new LinearRobotArmData();
  
-    armData.VerticalTranslationController = new CANSparkMax(10, MotorType.kBrushed); //1
+    armData.VerticalTranslationController = new WPI_TalonSRX(10); //1
     armData.ArmRotationController = new WPI_TalonSRX(9); //2
     armData.WristRotationController = new WPI_TalonSRX(8); //3
 
