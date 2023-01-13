@@ -32,7 +32,7 @@ public class LinearRobotArm implements Component
     @Override
     public void Disabled() 
     {
-        
+
     }
 
     @Override
@@ -60,7 +60,7 @@ public class LinearRobotArm implements Component
 
     public double GetTranslationRaw()
     {
-        return Data.VerticalTranslationEncoder.get() / RobotController.getVoltage5V();
+        return Data.VerticalTranslationEncoder.get();
     }
     public double GetTranslationDistance()
     {
@@ -69,7 +69,7 @@ public class LinearRobotArm implements Component
 
     public double GetArmRotationRaw()
     {
-        return Data.ArmRotationEncoder.get() / RobotController.getVoltage5V();
+        return Data.ArmRotationEncoder.get();
     }
     public double GetArmRotationAngle()
     {
@@ -78,7 +78,7 @@ public class LinearRobotArm implements Component
 
     public double GetWristRotationRaw()
     {
-        return Data.WristRotationEncoder.get() / RobotController.getVoltage5V();
+        return Data.WristRotationEncoder.get();
     }
     public double GetWristRotationAngle()
     {
