@@ -12,4 +12,6 @@ public class LinearRobotArmData
     public AnalogEncoder VerticalTranslationEncoder;
     public AnalogEncoder ArmRotationEncoder;
     public AnalogEncoder WristRotationEncoder;
+
+    public double VerticalTranslationHeight;
 }
