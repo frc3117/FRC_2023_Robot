@@ -1,6 +1,5 @@
 package frc.robot.SubSystems;
 
-import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.InputManager;
 import frc.robot.Library.FRC_3117_Tools.Interface.Component;
 import frc.robot.Library.FRC_3117_Tools.Math.Mathf;
