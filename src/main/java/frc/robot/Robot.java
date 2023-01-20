@@ -7,9 +7,12 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
+import frc.robot.SubSystems.EncoderTest;
 import frc.robot.SubSystems.LinearRobotArm;
+import frc.robot.SubSystems.Data.EncoderTestData;
 import frc.robot.SubSystems.Data.LinearRobotArmData;
 
 /**
@@ -115,6 +118,16 @@ public class Robot extends RobotBase
 
     RobotArm = new LinearRobotArm(armData);
     AddComponent("RobotArm", RobotArm);
+ 
+    var encoderTestData = new EncoderTestData();
+
+    encoderTestData.ShaftRotationController = new WPI_TalonSRX(0);
+
+     var encoderTest = new EncoderTest(encoderTestData);
+     AddComponent("EncoderTest", encoderTest);
+
+     //EncoderTest
+     encoderTestData.EncoderTestPWM = new DutyCycleEncoder(0);
   }
 
   @Override
@@ -128,5 +141,8 @@ public class Robot extends RobotBase
 
     Input.CreateAxis("WristRotation", 0, Input.XboxAxis.LEFTY, false);
     Input.SetAxisDeadzone("WristRotation", 0.15);
+    
+    // EncoderTest
+    Input.CreateButton("ShaftRotation", 0, Input.XboxButton.A);
   }
 }
