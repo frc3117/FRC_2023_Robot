@@ -23,11 +23,16 @@ public class MotorControllerConstant
     public boolean Inverted;
     public boolean Brushless;
 
+    private MotorController _controllerInstance;
+
     public MotorController ToMotorController()
     {
-        var controller = new MotorController(Type, Id, Brushless);
-        controller.SetInverted(Inverted);
+        if (_controllerInstance == null)
+        {
+            _controllerInstance = new MotorController(Type, Id, Brushless);
+            _controllerInstance.SetInverted(Inverted);
+        }
 
-        return controller;
+        return _controllerInstance;
     }
 }

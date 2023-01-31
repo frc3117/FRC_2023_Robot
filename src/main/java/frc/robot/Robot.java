@@ -146,12 +146,12 @@ public class Robot extends RobotBase
 
     var swerve = new Swerve(swerveModules, new ADIS16448_IMU_Gyro());
 
-    swerve.SetPIDGain(0, 1, 0, 0);
-    swerve.SetPIDGain(1, 1, 0, 0);
-    swerve.SetPIDGain(2, 1, 0, 0);
-    swerve.SetPIDGain(3, 1, 0, 0);
+    swerve.SetPIDGain(0, 0.5, 0, 0);
+    swerve.SetPIDGain(1, 0.5, 0, 0);
+    swerve.SetPIDGain(2, 0.5, 0, 0);
+    swerve.SetPIDGain(3, 0.5, 0, 0);
 
-    swerve.SetCurrentMode(DrivingMode.Local);
+    swerve.SetCurrentMode(DrivingMode.World);
     swerve.SetHeadingOffset(Math.PI / 2);
 
     AddComponent("Swerve", swerve);
