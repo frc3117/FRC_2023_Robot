@@ -4,16 +4,15 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
+import frc.robot.Library.FRC_3117_Tools.Component.Swerve;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
-import frc.robot.SubSystems.EncoderTest;
+import frc.robot.Library.FRC_3117_Tools.Component.Data.WheelData;
+import frc.robot.Library.FRC_3117_Tools.Component.Data.Input.XboxAxis;
+import frc.robot.Library.FRC_3117_Tools.Component.Swerve.DrivingMode;
+import frc.robot.Library.FRC_3117_Tools.Wrapper.ADIS16448_IMU_Gyro;
+import frc.robot.RobotConstant.RobotConstant;
 import frc.robot.SubSystems.LinearRobotArm;
-import frc.robot.SubSystems.Data.EncoderTestData;
-import frc.robot.SubSystems.Data.LinearRobotArmData;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -105,44 +104,71 @@ public class Robot extends RobotBase
   @Override
   public void CreateComponentInstance()
   {
-    //Robot Arm
-    var armData = new LinearRobotArmData();
- 
-    armData.VerticalTranslationController = new WPI_TalonSRX(10); //1
-    armData.ArmRotationController = new WPI_TalonSRX(9); //2
-    armData.WristRotationController = new WPI_TalonSRX(8); //3
+    //Front Left
+    var swerveModuleFL = new WheelData();
+    swerveModuleFL.DriveController = RobotConstant.SWERVE_FRONT_LEFT_DRIVE_CONTROLLER.ToMotorController();
+    swerveModuleFL.DirectionController = RobotConstant.SWERVE_FRONT_LEFT_STEER_CONTROLLER.ToMotorController();
+    swerveModuleFL.DirectionEncoderChannel = RobotConstant.SWERVE_FRONT_LEFT_STEER_ENCODER;
+    swerveModuleFL.WheelPosition = RobotConstant.SWERVE_FRONT_LEFT_POSITION;
+    swerveModuleFL.AngleOffset = RobotConstant.SWERVE_FRONT_LEFT_STEER_ENCODER_OFFSET;
 
-    armData.VerticalTranslationEncoder = new AnalogEncoder(0);
-    armData.ArmRotationEncoder = new AnalogEncoder(1);
-    armData.WristRotationEncoder = new AnalogEncoder(2);
+    //Front Right
+    var swerveModuleFR = new WheelData();
+    swerveModuleFR.DriveController = RobotConstant.SWERVE_FRONT_RIGHT_DRIVE_CONTROLLER.ToMotorController();
+    swerveModuleFR.DirectionController = RobotConstant.SWERVE_FRONT_RIGHT_STEER_CONTROLLER.ToMotorController();
+    swerveModuleFR.DirectionEncoderChannel = RobotConstant.SWERVE_FRONT_RIGHT_STEER_ENCODER;
+    swerveModuleFR.WheelPosition = RobotConstant.SWERVE_FRONT_RIGHT_POSITION;
+    swerveModuleFR.AngleOffset = RobotConstant.SWERVE_FRONT_RIGHT_STEER_ENCODER_OFFSET;
 
-    RobotArm = new LinearRobotArm(armData);
-    AddComponent("RobotArm", RobotArm);
- 
-    var encoderTestData = new EncoderTestData();
+    //Rear Left
+    var swerveModuleRL = new WheelData();
+    swerveModuleRL.DriveController = RobotConstant.SWERVE_REAR_LEFT_DRIVE_CONTROLLER.ToMotorController();
+    swerveModuleRL.DirectionController = RobotConstant.SWERVE_REAR_LEFT_STEER_CONTROLLER.ToMotorController();
+    swerveModuleRL.DirectionEncoderChannel = RobotConstant.SWERVE_REAR_LEFT_STEER_ENCODER;
+    swerveModuleRL.WheelPosition = RobotConstant.SWERVE_REAR_LEFT_POSITION;
+    swerveModuleRL.AngleOffset = RobotConstant.SWERVE_REAR_LEFT_STEER_ENCODER_OFFSET;
 
-    encoderTestData.ShaftRotationController = new WPI_TalonSRX(0);
+    //Rear Left
+    var swerveModuleRR = new WheelData();
+    swerveModuleRR.DriveController = RobotConstant.SWERVE_REAR_RIGHT_DRIVE_CONTROLLER.ToMotorController();
+    swerveModuleRR.DirectionController = RobotConstant.SWERVE_REAR_RIGHT_STEER_CONTROLLER.ToMotorController();
+    swerveModuleRR.DirectionEncoderChannel = RobotConstant.SWERVE_REAR_RIGHT_STEER_ENCODER;
+    swerveModuleRR.WheelPosition = RobotConstant.SWERVE_REAR_RIGHT_POSITION;
+    swerveModuleRR.AngleOffset = RobotConstant.SWERVE_REAR_RIGHT_STEER_ENCODER_OFFSET;
 
-     var encoderTest = new EncoderTest(encoderTestData);
-     AddComponent("EncoderTest", encoderTest);
+    var swerveModules = new WheelData[]
+    {
+      swerveModuleFL,
+      swerveModuleFR,
+      swerveModuleRL,
+      swerveModuleRR
+    };
 
-     //EncoderTest
-     encoderTestData.EncoderTestPWM = new DutyCycleEncoder(0);
+    var swerve = new Swerve(swerveModules, new ADIS16448_IMU_Gyro());
+
+    swerve.SetPIDGain(0, 0.5, 0, 0);
+    swerve.SetPIDGain(1, 0.5, 0, 0);
+    swerve.SetPIDGain(2, 0.5, 0, 0);
+    swerve.SetPIDGain(3, 0.5, 0, 0);
+
+    swerve.SetCurrentMode(DrivingMode.World);
+    swerve.SetHeadingOffset(Math.PI / 2);
+
+    AddComponent("Swerve", swerve);
   }
 
   @Override
   public void CreateInput()
   {
-    Input.CreateAxis("VerticalTranslation", 0, Input.XboxAxis.RIGHT_TRIGGER, false);
-    Input.SetAxisNegative("VerticalTranslation", 0, Input.XboxAxis.LEFT_TRIGGER, false);
+    //Swerve
+    Input.CreateAxis("Horizontal", 0, XboxAxis.LEFTX, false);
+    Input.CreateAxis("Vertical", 0, XboxAxis.LEFTY, true);
+    Input.CreateAxis("Rotation", 0, XboxAxis.LEFT_TRIGGER, false);
 
-    Input.CreateAxis("ArmRotation", 0, Input.XboxAxis.RIGHTY, false);
-    Input.SetAxisDeadzone("ArmRotation", 0.15);
+    Input.SetAxisNegative("Rotation", 0, XboxAxis.RIGHT_TRIGGER, false);
 
-    Input.CreateAxis("WristRotation", 0, Input.XboxAxis.LEFTY, false);
-    Input.SetAxisDeadzone("WristRotation", 0.15);
-    
-    // EncoderTest
-    Input.CreateButton("ShaftRotation", 0, Input.XboxButton.A);
+    Input.SetAxisDeadzone("Horizontal", 0.15);
+    Input.SetAxisDeadzone("Vertical", 0.15);
+    Input.SetAxisDeadzone("Rotation", 0.15);
   }
 }
