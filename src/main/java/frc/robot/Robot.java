@@ -12,7 +12,8 @@ import frc.robot.Library.FRC_3117_Tools.Component.Data.Input.XboxAxis;
 import frc.robot.Library.FRC_3117_Tools.Component.Swerve.DrivingMode;
 import frc.robot.Library.FRC_3117_Tools.Wrapper.ADIS16448_IMU_Gyro;
 import frc.robot.RobotConstant.RobotConstant;
-import frc.robot.SubSystems.LinearRobotArm;
+import frc.robot.SubSystems.Manipulator;
+import frc.robot.SubSystems.Data.ManipulatorData;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,8 +27,6 @@ public class Robot extends RobotBase
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  
-   public LinearRobotArm RobotArm;
 
   @Override
   public void robotInit() 
@@ -104,7 +103,7 @@ public class Robot extends RobotBase
   @Override
   public void CreateComponentInstance()
   {
-    //Front Left
+    // Front Left
     var swerveModuleFL = new WheelData();
     swerveModuleFL.DriveController = RobotConstant.SWERVE_FRONT_LEFT_DRIVE_CONTROLLER.ToMotorController();
     swerveModuleFL.DirectionController = RobotConstant.SWERVE_FRONT_LEFT_STEER_CONTROLLER.ToMotorController();
@@ -112,7 +111,7 @@ public class Robot extends RobotBase
     swerveModuleFL.WheelPosition = RobotConstant.SWERVE_FRONT_LEFT_POSITION;
     swerveModuleFL.AngleOffset = RobotConstant.SWERVE_FRONT_LEFT_STEER_ENCODER_OFFSET;
 
-    //Front Right
+    // Front Right
     var swerveModuleFR = new WheelData();
     swerveModuleFR.DriveController = RobotConstant.SWERVE_FRONT_RIGHT_DRIVE_CONTROLLER.ToMotorController();
     swerveModuleFR.DirectionController = RobotConstant.SWERVE_FRONT_RIGHT_STEER_CONTROLLER.ToMotorController();
@@ -120,7 +119,7 @@ public class Robot extends RobotBase
     swerveModuleFR.WheelPosition = RobotConstant.SWERVE_FRONT_RIGHT_POSITION;
     swerveModuleFR.AngleOffset = RobotConstant.SWERVE_FRONT_RIGHT_STEER_ENCODER_OFFSET;
 
-    //Rear Left
+    // Rear Left
     var swerveModuleRL = new WheelData();
     swerveModuleRL.DriveController = RobotConstant.SWERVE_REAR_LEFT_DRIVE_CONTROLLER.ToMotorController();
     swerveModuleRL.DirectionController = RobotConstant.SWERVE_REAR_LEFT_STEER_CONTROLLER.ToMotorController();
@@ -128,7 +127,7 @@ public class Robot extends RobotBase
     swerveModuleRL.WheelPosition = RobotConstant.SWERVE_REAR_LEFT_POSITION;
     swerveModuleRL.AngleOffset = RobotConstant.SWERVE_REAR_LEFT_STEER_ENCODER_OFFSET;
 
-    //Rear Left
+    // Rear Left
     var swerveModuleRR = new WheelData();
     swerveModuleRR.DriveController = RobotConstant.SWERVE_REAR_RIGHT_DRIVE_CONTROLLER.ToMotorController();
     swerveModuleRR.DirectionController = RobotConstant.SWERVE_REAR_RIGHT_STEER_CONTROLLER.ToMotorController();
@@ -136,8 +135,7 @@ public class Robot extends RobotBase
     swerveModuleRR.WheelPosition = RobotConstant.SWERVE_REAR_RIGHT_POSITION;
     swerveModuleRR.AngleOffset = RobotConstant.SWERVE_REAR_RIGHT_STEER_ENCODER_OFFSET;
 
-    var swerveModules = new WheelData[]
-    {
+    var swerveModules = new WheelData[] {
       swerveModuleFL,
       swerveModuleFR,
       swerveModuleRL,
@@ -155,6 +153,11 @@ public class Robot extends RobotBase
     swerve.SetHeadingOffset(Math.PI / 2);
 
     AddComponent("Swerve", swerve);
+    
+    // Manipulator
+    var manipulator = new Manipulator(new ManipulatorData());
+
+    AddComponent("Manipulator", manipulator);
   }
 
   @Override
