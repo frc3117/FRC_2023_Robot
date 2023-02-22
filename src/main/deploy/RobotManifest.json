@@ -1,0 +1,175 @@
+{
+  "devices": {
+    "mainIMU": {
+      "type": "ADIS16448",
+      "offset": 0
+    },
+    "swerveHeadingEncoder_0": {
+      "type": "AnalogInput",
+      "id": 0,
+      "offset": 0,
+      "inverted": false
+    },
+    "swerveHeadingMotor_0": {
+      "type": "CANSparkMax",
+      "id": 0,
+      "inverted": false,
+      "brake": false
+    },
+    "swerveDriveMotor_0": {
+      "type": "TalonFX",
+      "id": 0,
+      "inverted": false,
+      "brake": false
+    },
+    "swerveHeadingEncoder_1": {
+      "type": "AnalogInput",
+      "id": 1,
+      "offset": 0,
+      "inverted": false
+    },
+    "swerveHeadingMotor_1": {
+      "type": "CANSparkMax",
+      "id": 1,
+      "inverted": false,
+      "brake": false
+    },
+    "swerveDriveMotor_1": {
+      "type": "TalonFX",
+      "id": 1,
+      "inverted": false,
+      "brake": false
+    },
+    "swerveHeadingEncoder_2": {
+      "type": "AnalogInput",
+      "id": 2,
+      "offset": 0,
+      "inverted": false
+    },
+    "swerveHeadingMotor_2": {
+      "type": "CANSparkMax",
+      "id": 2,
+      "inverted": false,
+      "brake": false
+    },
+    "swerveDriveMotor_2": {
+      "type": "TalonFX",
+      "id": 2,
+      "inverted": false,
+      "brake": false
+    },
+    "swerveHeadingEncoder_3": {
+      "type": "AnalogInput",
+      "id": 3,
+      "offset": 0,
+      "inverted": false
+    },
+    "swerveHeadingMotor_3": {
+      "type": "CANSparkMax",
+      "id": 3,
+      "inverted": false,
+      "brake": false
+    },
+    "swerveDriveMotor_3": {
+      "type": "TalonFX",
+      "id": 3,
+      "inverted": false,
+      "brake": false
+    },
+    "rotatingBaseMotor": {
+      "type": "CANSparkMax",
+      "id": 4,
+      "inverted": false,
+      "brake": false
+    },
+    "segment0Motor_0": {
+      "type": "CANSparkMax",
+      "id": 5,
+      "inverted": false,
+      "brake": false
+    },
+    "segment0Motor_1": {
+      "type": "CANSparkMax",
+      "id": 6,
+      "inverted": false,
+      "brake": false
+    },
+    "segment1Motor_0": {
+      "type": "CANSparkMax",
+      "id": 7,
+      "inverted": false,
+      "brake": false
+    },
+    "segment2Motor_0": {
+      "type": "CANSparkMax",
+      "id": 8,
+      "inverted": false,
+      "brake": false
+    },
+    "segment3Motor_0": {
+      "type": "CANSparkMax",
+      "id": 9,
+      "inverted": false,
+      "brake": false
+    }
+  },
+  "swerveDrive": {
+    "driveMode": "World",
+    "IMU": "mainIMU",
+    "modules": [
+      {
+        "headingEncoder": "swerveHeadingEncoder_0",
+        "headingMotor": "swerveHeadingMotor_0",
+        "driveMotor": "swerveDriveMotor_0",
+        "position": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "headingEncoder": "swerveHeadingEncoder_1",
+        "headingMotor": "swerveHeadingMotor_1",
+        "driveMotor": "swerveDriveMotor_1",
+        "position": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "headingEncoder": "swerveHeadingEncoder_2",
+        "headingMotor": "swerveHeadingMotor_2",
+        "driveMotor": "swerveDriveMotor_2",
+        "position": {
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "headingEncoder": "swerveHeadingEncoder_3",
+        "headingMotor": "swerveHeadingMotor_3",
+        "driveMotor": "swerveDriveMotor_3",
+        "position": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    ]
+  },
+  "robotArm": {
+    "segments": [
+      {
+        "positiveMotors": [
+          "rotatingBaseMotor"
+        ],
+        "negativeMotors": [],
+        "DH": {
+          "d": 0,
+          "alpha": 0,
+          "r": 0,
+          "theta": 0
+        }
+      }
+    ],
+    "algorithm": "MuJoCo"
+  }
+}

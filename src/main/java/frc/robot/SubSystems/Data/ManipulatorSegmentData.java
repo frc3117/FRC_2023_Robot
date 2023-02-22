@@ -4,15 +4,10 @@ import frc.robot.Library.FRC_3117_Tools.Component.Data.MotorControllerGroup;
 import frc.robot.Library.FRC_3117_Tools.Math.Vector3d;
 import frc.robot.Library.FRC_3117_Tools.Wrapper.Encoder.Interface.AbsoluteEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ManipulatorData
+public class ManipulatorSegmentData
 {
-    public void AddSegment(ManipulatorSegmentData segment)
-    {
-        Segments.add(segment);
-    }
-
-    public List<ManipulatorSegmentData> Segments = new ArrayList<>();
+    public Vector3d Axis;
+    public double Length;
+    public MotorControllerGroup Motors;
+    public AbsoluteEncoder Encoder;
 }
