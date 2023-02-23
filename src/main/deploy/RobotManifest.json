@@ -4,77 +4,77 @@
       "type": "ADIS16448",
       "offset": 0
     },
-    "swerveHeadingEncoder_0": {
+    "swerveHeadingEncoder_FR": {
       "type": "AnalogInput",
       "id": 0,
-      "offset": 0,
+      "offset": 0.2360,
       "inverted": false
     },
-    "swerveHeadingMotor_0": {
-      "type": "CANSparkMax",
-      "id": 0,
-      "inverted": false,
-      "brake": false
-    },
-    "swerveDriveMotor_0": {
-      "type": "TalonFX",
-      "id": 0,
-      "inverted": false,
-      "brake": false
-    },
-    "swerveHeadingEncoder_1": {
-      "type": "AnalogInput",
-      "id": 1,
-      "offset": 0,
-      "inverted": false
-    },
-    "swerveHeadingMotor_1": {
+    "swerveHeadingMotor_FR": {
       "type": "CANSparkMax",
       "id": 1,
       "inverted": false,
-      "brake": false
+      "brake": true
     },
-    "swerveDriveMotor_1": {
+    "swerveDriveMotor_FR": {
       "type": "TalonFX",
+      "id": 2,
+      "inverted": true,
+      "brake": true
+    },
+    "swerveHeadingEncoder_RR": {
+      "type": "AnalogInput",
       "id": 1,
-      "inverted": false,
-      "brake": false
-    },
-    "swerveHeadingEncoder_2": {
-      "type": "AnalogInput",
-      "id": 2,
-      "offset": 0,
+      "offset": 0.2512,
       "inverted": false
     },
-    "swerveHeadingMotor_2": {
-      "type": "CANSparkMax",
-      "id": 2,
-      "inverted": false,
-      "brake": false
-    },
-    "swerveDriveMotor_2": {
-      "type": "TalonFX",
-      "id": 2,
-      "inverted": false,
-      "brake": false
-    },
-    "swerveHeadingEncoder_3": {
-      "type": "AnalogInput",
-      "id": 3,
-      "offset": 0,
-      "inverted": false
-    },
-    "swerveHeadingMotor_3": {
+    "swerveHeadingMotor_RR": {
       "type": "CANSparkMax",
       "id": 3,
       "inverted": false,
-      "brake": false
+      "brake": true
     },
-    "swerveDriveMotor_3": {
+    "swerveDriveMotor_RR": {
       "type": "TalonFX",
-      "id": 3,
+      "id": 4,
+      "inverted": true,
+      "brake": true
+    },
+    "swerveHeadingEncoder_RL": {
+      "type": "AnalogInput",
+      "id": 2,
+      "offset": 0.4285,
+      "inverted": false
+    },
+    "swerveHeadingMotor_RL": {
+      "type": "CANSparkMax",
+      "id": 5,
       "inverted": false,
-      "brake": false
+      "brake": true
+    },
+    "swerveDriveMotor_RL": {
+      "type": "TalonFX",
+      "id": 6,
+      "inverted": false,
+      "brake": true
+    },
+    "swerveHeadingEncoder_FL": {
+      "type": "AnalogInput",
+      "id": 3,
+      "offset": 0.1467,
+      "inverted": false
+    },
+    "swerveHeadingMotor_FL": {
+      "type": "CANSparkMax",
+      "id": 7,
+      "inverted": false,
+      "brake": true
+    },
+    "swerveDriveMotor_FL": {
+      "type": "TalonFX",
+      "id": 8,
+      "inverted": false,
+      "brake": true
     },
     "rotatingBaseMotor": {
       "type": "CANSparkMax",
@@ -113,44 +113,70 @@
       "brake": false
     }
   },
+  "inputs": {
+    "Horizontal": {
+      "type": "Axis",
+      "positive": "0.XboxAxis.LEFTX",
+      "positiveInverted": false,
+      "negative": "",
+      "negativeInverted": false,
+      "deadzone": 0.15
+    },
+    "Vertical": {
+      "type":  "Axis",
+      "positive": "0.XboxAxis.LEFTY",
+      "positiveInverted": true,
+      "negative": "",
+      "negativeInverted": false,
+      "deadzone": 0.15
+    },
+    "Rotation": {
+      "type": "Axis",
+      "positive": "0.XboxAxis.LEFT_TRIGGER",
+      "positiveInverted": false,
+      "negative": "0.XboxAxis.RIGHT_TRIGGER",
+      "negativeInverted": false,
+      "deadzone": 0.15
+    }
+  },
   "swerveDrive": {
     "driveMode": "World",
     "IMU": "mainIMU",
     "modules": [
       {
-        "headingEncoder": "swerveHeadingEncoder_0",
-        "headingMotor": "swerveHeadingMotor_0",
-        "driveMotor": "swerveDriveMotor_0",
+        "headingEncoder": "swerveHeadingEncoder_FR",
+        "headingMotor": "swerveHeadingMotor_FR",
+        "driveMotor": "swerveDriveMotor_FR",
         "position": {
-          "x": 0,
-          "y": 0
+          "x": -0.78206,
+          "y": -0.62320
         }
       },
       {
-        "headingEncoder": "swerveHeadingEncoder_1",
-        "headingMotor": "swerveHeadingMotor_1",
-        "driveMotor": "swerveDriveMotor_1",
+        "headingEncoder": "swerveHeadingEncoder_RR",
+        "headingMotor": "swerveHeadingMotor_RR",
+        "driveMotor": "swerveDriveMotor_RR",
         "position": {
-          "x": 0,
-          "y": 0
+          "x": 0.78206,
+          "y": -0.62320
         }
       },
       {
-        "headingEncoder": "swerveHeadingEncoder_2",
-        "headingMotor": "swerveHeadingMotor_2",
-        "driveMotor": "swerveDriveMotor_2",
+        "headingEncoder": "swerveHeadingEncoder_RL",
+        "headingMotor": "swerveHeadingMotor_RL",
+        "driveMotor": "swerveDriveMotor_RL",
         "position": {
-          "x": 0,
-          "y": 0
+          "x": 0.78206,
+          "y": 0.62320
         }
       },
       {
-        "headingEncoder": "swerveHeadingEncoder_3",
-        "headingMotor": "swerveHeadingMotor_3",
-        "driveMotor": "swerveDriveMotor_3",
+        "headingEncoder": "swerveHeadingEncoder_FL",
+        "headingMotor": "swerveHeadingMotor_FL",
+        "driveMotor": "swerveDriveMotor_FL",
         "position": {
-          "x": 0,
-          "y": 0
+          "x": -0.78206,
+          "y": 0.62320
         }
       }
     ]
