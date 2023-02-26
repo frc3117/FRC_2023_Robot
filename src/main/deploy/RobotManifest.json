@@ -78,13 +78,19 @@
     },
     "rotatingBaseMotor": {
       "type": "CANSparkMax",
-      "id": 4,
+      "id": 40,
       "inverted": false,
       "brake": false
     },
+    "rotatingBaseEncoder": {
+      "type": "DutyCycle",
+      "id": 9,
+      "offset": 0,
+      "inverted": false
+    },
     "segment0Motor_0": {
       "type": "CANSparkMax",
-      "id": 5,
+      "id": 41,
       "inverted": false,
       "brake": false
     },
@@ -94,23 +100,35 @@
       "inverted": false,
       "brake": false
     },
+    "segment0Encoder": {
+      "type": "DutyCycle",
+      "id": 10,
+      "offset": 0,
+      "inverted": false
+    },
     "segment1Motor_0": {
       "type": "CANSparkMax",
-      "id": 7,
+      "id": 42,
       "inverted": false,
       "brake": false
+    },
+    "segment1Encoder": {
+      "type": "DutyCycle",
+      "id": 11,
+      "offset": 0,
+      "inverted": false
     },
     "segment2Motor_0": {
       "type": "CANSparkMax",
-      "id": 8,
+      "id": 43,
       "inverted": false,
       "brake": false
     },
-    "segment3Motor_0": {
-      "type": "CANSparkMax",
-      "id": 9,
-      "inverted": false,
-      "brake": false
+    "segment2Encoder": {
+      "type": "DutyCycle",
+      "id": 12,
+      "offset": 0,
+      "inverted": false
     }
   },
   "inputs": {
@@ -181,21 +199,63 @@
       }
     ]
   },
-  "robotArm": {
+  "manipulator": {
     "segments": [
       {
+        "encoder": "rotatingBaseEncoder",
         "positiveMotors": [
           "rotatingBaseMotor"
         ],
         "negativeMotors": [],
         "DH": {
+          "theta": 0,
+          "alpha": 1.57,
           "d": 0,
+          "r": 0
+        }
+      },
+      {
+        "encoder": "segment0Encoder",
+        "positiveMotors": [
+          "segment0Motor_0"
+        ],
+        "negativeMotors": [
+          "segment0Motor_1"
+        ],
+        "DH": {
+          "theta": 0,
           "alpha": 0,
-          "r": 0,
-          "theta": 0
+          "d": 0,
+          "r": 1
+        }
+      },
+      {
+        "encoder": "segment1Encoder",
+        "positiveMotors": [
+          "segment1Motor_0"
+        ],
+        "negativeMotors": [],
+        "DH": {
+          "theta": 0,
+          "alpha": 0,
+          "d": 0,
+          "r": 1
+        }
+      },
+      {
+        "encoder": "segment2Encoder",
+        "positiveMotors": [
+          "segment2Motor_0"
+        ],
+        "negativeMotors": [],
+        "DH": {
+          "theta": 0,
+          "alpha": 0,
+          "d": 0,
+          "r": 1
         }
       }
     ],
-    "algorithm": "MuJoCo"
+    "algorithm": "FabrIK"
   }
 }

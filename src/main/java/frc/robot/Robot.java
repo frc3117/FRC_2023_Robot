@@ -1,7 +1,9 @@
 package frc.robot;
 
 import frc.robot.Library.FRC_3117_Tools.Component.Data.MotorControllerGroup;
+import frc.robot.Library.FRC_3117_Tools.Math.Timer;
 import frc.robot.Library.FRC_3117_Tools.Math.Vector3d;
+import frc.robot.Library.FRC_3117_Tools.Physics.Kinematics.DHParameters;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
 import frc.robot.Library.FRC_3117_Tools.Component.Swerve;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
@@ -95,50 +97,6 @@ public class Robot extends RobotBase
     swerve.SetPIDGain(3, 0.5, 0, 0);
 
     swerve.SetHeadingOffset(Math.PI / 2);
-    
-    // Manipulator
-    var manipulatorData = new ManipulatorData();
-
-    // Rotating Base
-    var rotBase = new ManipulatorSegmentData();
-    rotBase.Axis = new Vector3d(0,0, 1);
-    rotBase.Length = 0;
-    rotBase.Motors = new MotorControllerGroup()
-            .AddPositiveController(null);
-    rotBase.Encoder = new DutyCycleAbsoluteEncoder(5);
-
-    // First Segment
-    var segm0 = new ManipulatorSegmentData();
-    segm0.Axis = new Vector3d(0,1, 0);
-    segm0.Length = 0;
-    segm0.Motors = new MotorControllerGroup()
-            .AddPositiveController(null)
-            .AddNegativeController(null);
-    segm0.Encoder = new DutyCycleAbsoluteEncoder(0);
-
-    // Second Segment
-    var segm1 = new ManipulatorSegmentData();
-    segm1.Axis = new Vector3d(0,1, 1);
-    segm1.Length = 0;
-    segm1.Motors = new MotorControllerGroup()
-            .AddPositiveController(null);
-    segm1.Encoder = new DutyCycleAbsoluteEncoder(1);
-
-    // Third Segment
-    var segm2 = new ManipulatorSegmentData();
-    segm2.Axis = new Vector3d(0,1, 1);
-    segm2.Length = 0;
-    segm2.Motors = new MotorControllerGroup()
-            .AddPositiveController(null);
-    segm2.Encoder = new DutyCycleAbsoluteEncoder(2);
-
-    manipulatorData.AddSegment(rotBase);
-    manipulatorData.AddSegment(segm0);
-    manipulatorData.AddSegment(segm1);
-    manipulatorData.AddSegment(segm2);
-
-    var manipulator = new Manipulator(manipulatorData);
-    AddComponent("Manipulator", manipulator);
   }
 
   @Override
