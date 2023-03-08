@@ -7,7 +7,7 @@
     "swerveHeadingEncoder_FR": {
       "type": "AnalogInput",
       "id": 0,
-      "offset": 0.2360,
+      "offset": 0.9598,
       "inverted": false
     },
     "swerveHeadingMotor_FR": {
@@ -25,7 +25,7 @@
     "swerveHeadingEncoder_RR": {
       "type": "AnalogInput",
       "id": 1,
-      "offset": 0.2512,
+      "offset": 0.4846,
       "inverted": false
     },
     "swerveHeadingMotor_RR": {
@@ -43,7 +43,7 @@
     "swerveHeadingEncoder_RL": {
       "type": "AnalogInput",
       "id": 2,
-      "offset": 0.4285,
+      "offset": 0.5752,
       "inverted": false
     },
     "swerveHeadingMotor_RL": {
@@ -61,7 +61,7 @@
     "swerveHeadingEncoder_FL": {
       "type": "AnalogInput",
       "id": 3,
-      "offset": 0.1467,
+      "offset": 0.0562,
       "inverted": false
     },
     "swerveHeadingMotor_FL": {
@@ -78,56 +78,56 @@
     },
     "rotatingBaseMotor": {
       "type": "CANSparkMax",
-      "id": 40,
+      "id": 16,
       "inverted": false,
       "brake": false
     },
     "rotatingBaseEncoder": {
       "type": "DutyCycle",
-      "id": 9,
-      "offset": 0,
+      "id": 5,
+      "offset": 0.89,
       "inverted": false
     },
     "segment0Motor_0": {
       "type": "CANSparkMax",
-      "id": 41,
+      "id": 13,
       "inverted": false,
       "brake": false
     },
     "segment0Motor_1": {
       "type": "CANSparkMax",
-      "id": 6,
+      "id": 10,
       "inverted": false,
       "brake": false
     },
     "segment0Encoder": {
       "type": "DutyCycle",
-      "id": 10,
-      "offset": 0,
+      "id": 0,
+      "offset": 0.55,
       "inverted": false
     },
     "segment1Motor_0": {
       "type": "CANSparkMax",
-      "id": 42,
+      "id": 11,
       "inverted": false,
       "brake": false
     },
     "segment1Encoder": {
       "type": "DutyCycle",
-      "id": 11,
-      "offset": 0,
+      "id": 1,
+      "offset": 0.53,
       "inverted": false
     },
     "segment2Motor_0": {
       "type": "CANSparkMax",
-      "id": 43,
+      "id": 12,
       "inverted": false,
       "brake": false
     },
     "segment2Encoder": {
       "type": "DutyCycle",
-      "id": 12,
-      "offset": 0,
+      "id": 2,
+      "offset": 0.38,
       "inverted": false
     }
   },
@@ -155,6 +155,72 @@
       "negative": "0.XboxAxis.RIGHT_TRIGGER",
       "negativeInverted": false,
       "deadzone": 0.15
+    },
+    "UpSegment": {
+      "type": "Button",
+      "positive": "0.XboxButton.RB",
+      "positiveInverted": false,
+      "negative": "",
+      "negativeInverted": false,
+      "deadzone": 0
+    },
+    "DownSegment": {
+      "type": "Button",
+      "positive": "0.XboxButton.LB",
+      "positiveInverted": false,
+      "negative": "",
+      "negativeInverted": false,
+      "deadzone": 0
+    },
+    "SelectFirst": {
+      "type": "Button",
+      "positive": "0.XboxButton.X",
+      "positiveInverted": false,
+      "negative": "",
+      "negativeInverted": false,
+      "deadzone": 0
+    },
+    "SelectSecond": {
+      "type": "Button",
+      "positive": "0.XboxButton.Y",
+      "positiveInverted": false,
+      "negative": "",
+      "negativeInverted": false,
+      "deadzone": 0
+    },
+    "SelectThird": {
+      "type": "Button",
+      "positive": "0.XboxButton.B",
+      "positiveInverted": false,
+      "negative": "",
+      "negativeInverted": false,
+      "deadzone": 0
+    }
+  },
+  "controllers": {
+    "rotatingBasePID": {
+      "type": "PID",
+      "kp": 0,
+      "ki": 0,
+      "kd": 0
+    },
+    "segment0PID": {
+      "type": "PID",
+      "kp": 0,
+      "ki": 0,
+      "kd": 0
+    },
+    "segment1PID": {
+      "type": "PID",
+      "kp": 0,
+      "ki": 0,
+      "kd": 0
+    },
+    "segment2PID": {
+      "type": "PID",
+      "kp": 0,
+      "ki": 0,
+      "kd": 0
     }
   },
   "swerveDrive": {
@@ -166,8 +232,8 @@
         "headingMotor": "swerveHeadingMotor_FR",
         "driveMotor": "swerveDriveMotor_FR",
         "position": {
-          "x": -0.78206,
-          "y": -0.62320
+          "x": 0.78206,
+          "y": 0.62320
         }
       },
       {
@@ -175,8 +241,8 @@
         "headingMotor": "swerveHeadingMotor_RR",
         "driveMotor": "swerveDriveMotor_RR",
         "position": {
-          "x": 0.78206,
-          "y": -0.62320
+          "x": -0.78206,
+          "y": 0.62320
         }
       },
       {
@@ -184,8 +250,8 @@
         "headingMotor": "swerveHeadingMotor_RL",
         "driveMotor": "swerveDriveMotor_RL",
         "position": {
-          "x": 0.78206,
-          "y": 0.62320
+          "x": -0.78206,
+          "y": -0.62320
         }
       },
       {
@@ -193,13 +259,14 @@
         "headingMotor": "swerveHeadingMotor_FL",
         "driveMotor": "swerveDriveMotor_FL",
         "position": {
-          "x": -0.78206,
-          "y": 0.62320
+          "x": 0.78206,
+          "y": -0.62320
         }
       }
     ]
   },
   "manipulator": {
+    "limitSwitchesID": 0,
     "segments": [
       {
         "encoder": "rotatingBaseEncoder",
@@ -212,7 +279,9 @@
           "alpha": 1.57,
           "d": 0,
           "r": 0
-        }
+        },
+        "controller": "rotatingBasePID",
+        "keepAngle": false
       },
       {
         "encoder": "segment0Encoder",
@@ -226,8 +295,12 @@
           "theta": 0,
           "alpha": 0,
           "d": 0,
-          "r": 1
-        }
+          "r": 0.52
+        },
+        "controller": "segment0PID",
+        "minLimitSwitch": 0,
+        "maxLimitSwitch": 1,
+        "keepAngle": false
       },
       {
         "encoder": "segment1Encoder",
@@ -239,8 +312,12 @@
           "theta": 0,
           "alpha": 0,
           "d": 0,
-          "r": 1
-        }
+          "r": 0.52
+        },
+        "controller": "segment1PID",
+        "minLimitSwitch": 2,
+        "maxLimitSwitch": 3,
+        "keepAngle": true
       },
       {
         "encoder": "segment2Encoder",
@@ -252,10 +329,13 @@
           "theta": 0,
           "alpha": 0,
           "d": 0,
-          "r": 1
-        }
+          "r": 0.52
+        },
+        "controller": "segment2PID",
+        "minLimitSwitch": 4,
+        "maxLimitSwitch": 5,
+        "keepAngle": true
       }
-    ],
-    "algorithm": "FabrIK"
+    ]
   }
 }

@@ -1,16 +1,8 @@
 package frc.robot;
 
-import frc.robot.Library.FRC_3117_Tools.Component.Data.MotorControllerGroup;
-import frc.robot.Library.FRC_3117_Tools.Math.Timer;
-import frc.robot.Library.FRC_3117_Tools.Math.Vector3d;
-import frc.robot.Library.FRC_3117_Tools.Physics.Kinematics.DHParameters;
+import frc.robot.Library.FRC_3117_Tools.Component.CAN.MultiDigitalInputCAN;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
 import frc.robot.Library.FRC_3117_Tools.Component.Swerve;
-import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
-import frc.robot.Library.FRC_3117_Tools.Wrapper.Encoder.DutyCycleAbsoluteEncoder;
-import frc.robot.SubSystems.Data.ManipulatorSegmentData;
-import frc.robot.SubSystems.Manipulator;
-import frc.robot.SubSystems.Data.ManipulatorData;
 
 public class Robot extends RobotBase 
 {
