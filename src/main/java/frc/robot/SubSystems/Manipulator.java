@@ -5,23 +5,26 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Library.FRC_3117_Tools.Component.CAN.MultiDigitalInputCAN;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
+import frc.robot.Library.FRC_3117_Tools.Component.Data.InputManager;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.MotorControllerGroup;
-import frc.robot.Library.FRC_3117_Tools.Component.Data.Tupple.Pair;
 import frc.robot.Library.FRC_3117_Tools.Interface.Component;
 import frc.robot.Library.FRC_3117_Tools.Interface.FromManifest;
 import frc.robot.Library.FRC_3117_Tools.Manifest.RobotManifest;
 import frc.robot.Library.FRC_3117_Tools.Manifest.RobotManifestDevices;
 import frc.robot.Library.FRC_3117_Tools.Math.*;
-import frc.robot.Library.FRC_3117_Tools.Physics.Controll.Interface.ControllerBase;
+import frc.robot.Library.FRC_3117_Tools.Physics.Control.Interface.ControllerBase;
 import frc.robot.Library.FRC_3117_Tools.Physics.Kinematics.DHParameters;
 import frc.robot.Library.FRC_3117_Tools.Physics.Pose3d;
+import frc.robot.Robot;
 import frc.robot.SubSystems.Data.ManipulatorData;
+import frc.robot.SubSystems.Data.ManipulatorPose;
 import frc.robot.SubSystems.Data.ManipulatorSegmentData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
-@FromManifest(EntryName = "manipulator")
+@FromManifest(EntryName = "manipulator", OnLoadMethod = "CreateFromManifest")
 public class Manipulator implements Component, Sendable {
     public Manipulator(ManipulatorData data) {
         Data = data;
@@ -29,6 +32,12 @@ public class Manipulator implements Component, Sendable {
         _dhParams = Data.GetDHParameters();
         _jointsAngles = new double[data.Segments.size()];
         _segmentsEndEffectorPos = new Vector3d[data.Segments.size()];
+        _motorsLimits = new Range[data.Segments.size()];
+
+        for (var i = 0; i < data.Segments.size(); i++)
+        {
+            _motorsLimits[i] = new Range(0, 0);
+        }
 
         UpdatePositions();
 
@@ -36,7 +45,10 @@ public class Manipulator implements Component, Sendable {
         SmartDashboard.putData("Arm", this);
     }
 
-    public static Pair<String, Component> CreateFromManifest(String name) {
+    public static void CreateFromManifest(String name) {
+        if (!RobotManifest.ManifestJson.HasEntry(name))
+            return;
+
         var manifestObject = RobotManifest.ManifestJson.GetSubObject(name);
 
         var limitSwitches = new MultiDigitalInputCAN(manifestObject.GetInt("limitSwitchesID"));
@@ -65,9 +77,9 @@ public class Manipulator implements Component, Sendable {
             );
 
             if (segmentManifestObject.HasEntry("minLimitSwitch"))
-                segment.MinLimitSwitch = limitSwitches.GetDigitalInput(segmentManifestObject.GetInt("minLimitSwitch"), true);
+                segment.MinLimitSwitch = limitSwitches.GetDigitalInput(segmentManifestObject.GetInt("minLimitSwitch"), false);
             if (segmentManifestObject.HasEntry("maxLimitSwitch"))
-                segment.MaxLimitSwitch = limitSwitches.GetDigitalInput(segmentManifestObject.GetInt("maxLimitSwitch"), true);
+                segment.MaxLimitSwitch = limitSwitches.GetDigitalInput(segmentManifestObject.GetInt("maxLimitSwitch"), false);
 
             segment.Controller = ControllerBase.Controllers.get(segmentManifestObject.GetString("controller"));
             segment.KeepAngle = segmentManifestObject.GetBoolean("keepAngle");
@@ -79,16 +91,18 @@ public class Manipulator implements Component, Sendable {
         manipulator.LimitSwitches = limitSwitches;
         manipulator.Segments = new ArrayList<>(Arrays.asList(segments));
 
-        return new Pair<>("Manipulator", new Manipulator(manipulator));
+        Robot.Instance.AddComponent("Manipulator", new Manipulator(manipulator));
     }
     public ManipulatorData Data;
 
+    public HashMap<String, ManipulatorPose> Poses = new HashMap<>();
 
     private DHParameters[] _dhParams;
     private Matrix4X4[] _dhMatrices;
 
     private double[] _jointsAngles;
     private Vector3d[] _segmentsEndEffectorPos;
+    private Range[] _motorsLimits;
 
     private Vector3d _endEffectorTargetPos;
 
@@ -113,6 +127,12 @@ public class Manipulator implements Component, Sendable {
         // Do a forward kinematic loop to update the positions
         UpdatePositions();
 
+        if (InputManager.GetButtonDown("SaveButton"))
+            Print();
+
+        //if (Timer.GetFrameCount() % 100 == 0)
+            //System.out.println(DHParameters.GetJacobianMatrix(new Pose3d(Vector3d.Zero(), Quaternion.Identity()), _jointsAngles, _dhParams));
+
         // If the manipulator have been killed. Set the motor value to zero and return
         if (_killed)
         {
@@ -120,14 +140,13 @@ public class Manipulator implements Component, Sendable {
             return;
         }
 
-        var motorsLimits = new Range[Data.Segments.size()];
         for (var i = 0; i < Data.Segments.size(); i++)
         {
             var seg = Data.Segments.get(i);
             if (!seg.Encoder.IsConnected())
             {
                 try {
-                    Kill();
+                    //Kill();
                 }
                 catch (Exception e) {}
                 return;
@@ -153,42 +172,34 @@ public class Manipulator implements Component, Sendable {
                 }
             }
 
-            motorsLimits[i] = limit;
+            _motorsLimits[i] = limit;
         }
 
-        var val = 0;
-        if (Input.GetButton("UpSegment"))
-            val++;
-        if (Input.GetButton("DownSegment"))
-            val--;
+        var motorOutput = SmartDashboard.getNumber("MotorOutput", 0.1);
 
-        var output0 = 0.;
-        var output1 = 0.;
-        var output2 = 0.;
-        var output3 = 0.;
-
-        var force = val * SmartDashboard.getNumber("MotorOutput", 0.1);
-        if (Input.GetButton("SelectFirst"))
-            output1 = force;
-        else if (Input.GetButton("SelectSecond"))
-            output2 = force;
-        else if (Input.GetButton("SelectThird"))
-            output3 = force;
+        var rotatingBaseOutput = motorOutput * Input.GetAxis("RotatingBase");
+        var segment0Output = motorOutput * Input.GetAxis("Segment0");
+        var segment1Output = motorOutput * Input.GetAxis("Segment1");
+        var segment2Output = motorOutput * Input.GetAxis("Segment2");
+        var twistOutput = motorOutput * Input.GetAxis("Twist");
 
         // Apply the values to the motors
-        Data.Segments.get(0).Motors.Set(motorsLimits[0].Clamp(output0));
-        Data.Segments.get(1).Motors.Set(motorsLimits[1].Clamp(output1));
-        Data.Segments.get(2).Motors.Set(motorsLimits[2].Clamp(output2));
-        Data.Segments.get(3).Motors.Set(motorsLimits[3].Clamp(output3));
+        Data.Segments.get(0).Motors.Set(_motorsLimits[0].Clamp(rotatingBaseOutput));
+        Data.Segments.get(1).Motors.Set(_motorsLimits[1].Clamp(segment0Output));
+        Data.Segments.get(2).Motors.Set(_motorsLimits[2].Clamp(segment1Output));
+        Data.Segments.get(3).Motors.Set(_motorsLimits[3].Clamp(segment2Output));
+        Data.Segments.get(4).Motors.Set(_motorsLimits[4].Clamp(twistOutput));
     }
 
     @Override
     public void Print() {
-
+        System.out.println("------------------------------");
+        for (var i = 0; i < Data.Segments.size(); i++) {
+            System.out.println(Data.Segments.get(i).Encoder.GetRawAngle());
+        }
     }
 
-    public void Kill()
-    {
+    public void Kill() {
         _killed = true;
 
         for (var i = 0; i < Data.Segments.size(); i++)
@@ -238,6 +249,7 @@ public class Manipulator implements Component, Sendable {
             var keyBase = "Segment_" + i;
             var index = i;
 
+            builder.addBooleanProperty(keyBase + "/EncoderConnected", () -> Data.Segments.get(index).Encoder.IsConnected(), null);
             builder.addDoubleProperty(keyBase + "/EncoderAngleRaw", () -> Data.Segments.get(index).Encoder.GetRawValue(), null);
             builder.addDoubleProperty(keyBase + "/EncoderAngle", () -> GetSegmentEncoderAngle(index), null);
             builder.addDoubleProperty(keyBase + "/LocalAngle", () -> GetSegmentLocalAngle(index), null);
@@ -247,6 +259,9 @@ public class Manipulator implements Component, Sendable {
                 builder.addBooleanProperty(keyBase + "/MinLimitSwitch", () -> Data.Segments.get(index).MinLimitSwitch.GetValue(), null);
             if (Data.Segments.get(i).MaxLimitSwitch != null)
                 builder.addBooleanProperty(keyBase + "/MaxLimitSwitch", () -> Data.Segments.get(index).MaxLimitSwitch.GetValue(), null);
+
+            builder.addDoubleProperty(keyBase + "/MotorMin", () -> _motorsLimits[index].Min, null);
+            builder.addDoubleProperty(keyBase + "/MotorMax", () -> _motorsLimits[index].Max, null);
 
             builder.addDoubleProperty(keyBase + "/Position/X", () -> _segmentsEndEffectorPos[index].X, null);
             builder.addDoubleProperty(keyBase + "/Position/Y", () -> _segmentsEndEffectorPos[index].Y, null);

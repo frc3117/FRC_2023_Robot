@@ -1,11 +1,14 @@
 package frc.robot;
 
-import frc.robot.Library.FRC_3117_Tools.Component.CAN.MultiDigitalInputCAN;
+import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
+import frc.robot.Library.FRC_3117_Tools.Component.Data.MotorController;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
 import frc.robot.Library.FRC_3117_Tools.Component.Swerve;
 
 public class Robot extends RobotBase 
 {
+  public MotorController ClawMotor;
+
   @Override
   public void robotInit() 
   {
@@ -40,6 +43,8 @@ public class Robot extends RobotBase
   public void teleopPeriodic() 
   {
     super.teleopPeriodic();
+
+    ClawMotor.Set(Input.GetAxis("Claw") * 0.5);
   }
 
   @Override
@@ -89,11 +94,17 @@ public class Robot extends RobotBase
     swerve.SetPIDGain(3, 0.5, 0, 0);
 
     swerve.SetHeadingOffset(Math.PI / 2);
+
+    ClawMotor = new MotorController(MotorController.MotorControllerType.SparkMax, 15, true);
+    ClawMotor.SetBrake(true);
   }
 
   @Override
   public void CreateInput()
   {
+    Input.CreateAxis("Claw", 0, Input.XboxAxis.RIGHTY, false);
+    Input.SetAxisDeadzone("Claw", 0.15);
+
     /*
     //Swerve
     Input.CreateAxis("Horizontal", 0, XboxAxis.LEFTX, false);

@@ -7,7 +7,7 @@
     "swerveHeadingEncoder_FR": {
       "type": "AnalogInput",
       "id": 0,
-      "offset": 0.9598,
+      "offset": 0.5552,
       "inverted": false
     },
     "swerveHeadingMotor_FR": {
@@ -25,7 +25,7 @@
     "swerveHeadingEncoder_RR": {
       "type": "AnalogInput",
       "id": 1,
-      "offset": 0.4846,
+      "offset": 0.8189,
       "inverted": false
     },
     "swerveHeadingMotor_RR": {
@@ -43,7 +43,7 @@
     "swerveHeadingEncoder_RL": {
       "type": "AnalogInput",
       "id": 2,
-      "offset": 0.5752,
+      "offset": 0.4921,
       "inverted": false
     },
     "swerveHeadingMotor_RL": {
@@ -61,7 +61,7 @@
     "swerveHeadingEncoder_FL": {
       "type": "AnalogInput",
       "id": 3,
-      "offset": 0.0562,
+      "offset": 0.7365,
       "inverted": false
     },
     "swerveHeadingMotor_FL": {
@@ -77,7 +77,7 @@
       "brake": true
     },
     "rotatingBaseMotor": {
-      "type": "CANSparkMax",
+      "type": "TalonSRX",
       "id": 16,
       "inverted": false,
       "brake": false
@@ -85,7 +85,7 @@
     "rotatingBaseEncoder": {
       "type": "DutyCycle",
       "id": 5,
-      "offset": 0.89,
+      "offset": 0,
       "inverted": false
     },
     "segment0Motor_0": {
@@ -129,6 +129,18 @@
       "id": 2,
       "offset": 0.38,
       "inverted": false
+    },
+    "twistMotor": {
+      "type": "CANSparkMax",
+      "id": 14,
+      "inverted": false,
+      "brake": false
+    },
+    "twistEncoder": {
+      "type": "DutyCycle",
+      "id": 4,
+      "offset": 0,
+      "inverted": false
     }
   },
   "inputs": {
@@ -156,45 +168,33 @@
       "negativeInverted": false,
       "deadzone": 0.15
     },
-    "UpSegment": {
-      "type": "Button",
-      "positive": "0.XboxButton.RB",
+    "RotatingBase": {
+      "type": "Axis",
+      "positive": "1.XboxAxis.LEFT_TRIGGER",
       "positiveInverted": false,
-      "negative": "",
+      "negative": "1.XboxAxis.RIGHT_TRIGGER",
       "negativeInverted": false,
-      "deadzone": 0
+      "deadzone": 0.15
     },
-    "DownSegment": {
-      "type": "Button",
-      "positive": "0.XboxButton.LB",
+    "Segment0": {
+      "type": "Axis",
+      "positive": "1.XboxAxis.LEFTY",
       "positiveInverted": false,
       "negative": "",
       "negativeInverted": false,
-      "deadzone": 0
+      "deadzone": 0.15
     },
-    "SelectFirst": {
-      "type": "Button",
-      "positive": "0.XboxButton.X",
+    "Segment1": {
+      "type": "Axis",
+      "positive": "1.XboxAxis.RIGHTX",
       "positiveInverted": false,
       "negative": "",
       "negativeInverted": false,
-      "deadzone": 0
+      "deadzone": 0.15
     },
-    "SelectSecond": {
+    "SaveButton": {
       "type": "Button",
-      "positive": "0.XboxButton.Y",
-      "positiveInverted": false,
-      "negative": "",
-      "negativeInverted": false,
-      "deadzone": 0
-    },
-    "SelectThird": {
-      "type": "Button",
-      "positive": "0.XboxButton.B",
-      "positiveInverted": false,
-      "negative": "",
-      "negativeInverted": false,
-      "deadzone": 0
+      "positive": "0.XboxButton.A"
     }
   },
   "controllers": {
@@ -275,7 +275,7 @@
         ],
         "negativeMotors": [],
         "DH": {
-          "theta": 0,
+          "theta": 3.1415,
           "alpha": 1.57,
           "d": 0,
           "r": 0
@@ -335,7 +335,34 @@
         "minLimitSwitch": 4,
         "maxLimitSwitch": 5,
         "keepAngle": true
+      },
+      {
+        "encoder": "twistEncoder",
+        "positiveMotors": [
+          "twistMotor"
+        ],
+        "negativeMotors": [],
+        "DH": {
+          "theta": 0,
+          "alpha": 0,
+          "d": 0,
+          "r": 0
+        },
+        "controller": "twistPID",
+        "keepAngle": false
       }
     ]
+  },
+  "poses": {
+    "test": {
+      "mode": "World",
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
   }
 }
