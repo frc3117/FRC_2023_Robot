@@ -144,6 +144,9 @@ public class Manipulator implements Component, Sendable {
     public void Init() {
         UpdatePositions();
         _jointsTargetAngles = _joinsWorldAngles.clone();
+
+        for (var seg : Data.Segments)
+            seg.Controller.Reset();
     }
 
     @Override

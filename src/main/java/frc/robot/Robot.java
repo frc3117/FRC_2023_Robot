@@ -1,6 +1,9 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autonomous.AutonomousBase;
 import frc.robot.Autonomous.SimpleAuto;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
@@ -9,6 +12,7 @@ import frc.robot.Library.FRC_3117_Tools.RobotBase;
 import frc.robot.Library.FRC_3117_Tools.Component.Swerve;
 import frc.robot.SubSystems.AprilTag;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,9 +29,22 @@ public class Robot extends RobotBase
     AprilTag.GenerateTags();
     super.robotInit();
 
+    try {
+      for (var cam : UsbCamera.enumerateUsbCameras())
+      {
+        System.out.println(cam.name);
+        CameraServer.startAutomaticCapture(cam.dev);
+      }
+
+    }
+    catch (Exception e) {}
+
     for (var mode : AutonomousModes.entrySet()) {
       SelectedAutonomous.addOption(mode.getKey(), mode.getValue());
+      System.out.println(mode.getKey());
     }
+
+    SmartDashboard.putData("Auto Selector", SelectedAutonomous);
   }
 
   @Override
@@ -120,7 +137,7 @@ public class Robot extends RobotBase
 
     swerve.SetHeadingOffset(Math.PI / 2);
 
-    AddAutonomous(new SimpleAuto("cross-line", .5, 2));
+    AddAutonomous(new SimpleAuto("cross-line", .5, 3));
 
     //ClawMotor = new MotorController(MotorController.MotorControllerType.SparkMax, 15, true);
     //ClawMotor.SetBrake(true);

@@ -32,7 +32,7 @@ public class Feeder implements Component, Sendable {
 
     public FeederData Data;
 
-    private boolean _holdingObject;
+    private boolean _holdingObject = true;
 
     private boolean _holdingCone;
     private boolean _holdingCube;
@@ -65,12 +65,12 @@ public class Feeder implements Component, Sendable {
             else if (Input.GetButton("Intake"))
                 motorOutput = -0.25;
             else
-                motorOutput = 0.07;//HoldEquation(Data.HoldConeAmplitude, Data.HoldConeFreq, Data.HoldConeCutoff);
+                motorOutput = 0.1;//HoldEquation(Data.HoldConeAmplitude, Data.HoldConeFreq, Data.HoldConeCutoff);
         }
         else
         {
             if (Input.GetButton("Intake"))
-                motorOutput = 0.4;
+                motorOutput = 0.50;
             else if (Input.GetButton("Hold"))
                 _holdingObject = true;
         }

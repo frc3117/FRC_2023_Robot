@@ -29,7 +29,7 @@ public class SimpleAuto extends AutonomousBase
     @Override
     public void StartAuto()
     {
-        _swerve = Robot.Instance.GetComponent("Swerve");
+        _swerve = Robot.Instance.GetComponent("SwerveDrive");
     }
 
     @Override
@@ -37,20 +37,10 @@ public class SimpleAuto extends AutonomousBase
     {
         var OverrideValue = 0.;
 
-        switch (GetName()) {
-            case "cross-line":
-                if (Timer.GetTimeSinceStart() <= 2) {
-                    _swerve.OverrideRotationAxis(0);
-                    OverrideValue = 0.5;
-                }
-            break;
+        if (Timer.GetTimeSinceStart() <= _time) {
+            //_swerve.OverrideRotationAxis(0);
+            OverrideValue = -_speed;
         }
-
-        if (Timer.GetTimeSinceStart() > _time)
-        {
-            OverrideValue = 0;
-        }
-
         _swerve.OverrideVerticalAxis(OverrideValue);
     }
 

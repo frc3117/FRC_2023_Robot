@@ -168,9 +168,9 @@
     },
     "Rotation": {
       "type": "Axis",
-      "positive": "0.XboxAxis.LEFT_TRIGGER",
+      "positive": "0.XboxAxis.RIGHT_TRIGGER",
       "positiveInverted": false,
-      "negative": "0.XboxAxis.RIGHT_TRIGGER",
+      "negative": "0.XboxAxis.LEFT_TRIGGER",
       "negativeInverted": false,
       "deadzone": 0.15
     },
@@ -221,6 +221,22 @@
     "CubeLow": {
       "type": "Button",
       "positive": "1.GenericInput.INPUT_12"
+    },
+    "HumanPlayer-0": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_3"
+    } ,
+    "HumanPlayer-1": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_4"
+    },
+    "HumanPlayer-2": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_5"
+    },
+    "HumanPlayer-3": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_6"
     }
   },
   "controllers": {
@@ -233,29 +249,29 @@
     "segment0PID": {
       "type": "AntiWindupPID",
       "kp": 0.3,
-      "ki": 0,
+      "ki": 0.4,
       "kd": 0,
-      "resetOnFlip": false,
-      "minIntegral": -9999,
-      "maxIntegral": 9999
+      "resetOnFlip": true,
+      "minIntegral": -1,
+      "maxIntegral": 1
     },
     "segment1PID": {
       "type": "AntiWindupPID",
       "kp": 0.4,
-      "ki": 0,
+      "ki": 0.4,
       "kd": 0,
-      "resetOnFlip": false,
-      "minIntegral": -9999,
-      "maxIntegral": 9999
+      "resetOnFlip": true,
+      "minIntegral": -1,
+      "maxIntegral": 1
     },
     "segment2PID": {
       "type": "AntiWindupPID",
       "kp": 0.5,
-      "ki": 0,
+      "ki": 0.4,
       "kd": 0,
-      "resetOnFlip": false,
-      "minIntegral": -9999,
-      "maxIntegral": 9999
+      "resetOnFlip": true,
+      "minIntegral": -1,
+      "maxIntegral": 1
     },
     "twistPID": {
       "type": "PID",
