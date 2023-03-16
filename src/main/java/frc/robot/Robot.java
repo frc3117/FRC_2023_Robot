@@ -1,21 +1,32 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.Autonomous.AutonomousBase;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.MotorController;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
 import frc.robot.Library.FRC_3117_Tools.Component.Swerve;
 import frc.robot.SubSystems.AprilTag;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Robot extends RobotBase 
 {
   //public MotorController ClawMotor;
+
+  public SendableChooser<AutonomousBase> SelectedAutonomous = new SendableChooser<>();
+  public HashMap<String, AutonomousBase> AutonomousModes = new HashMap<>();
 
   @Override
   public void robotInit() 
   {
     AprilTag.GenerateTags();
-
     super.robotInit();
+
+    for (var mode : AutonomousModes.entrySet()) {
+      SelectedAutonomous.addOption(mode.getKey(), mode.getValue());
+    }
   }
 
   @Override
@@ -28,12 +39,22 @@ public class Robot extends RobotBase
   public void autonomousInit() 
   {
     super.autonomousInit();
+
+    SelectedAutonomous.getSelected().StartAuto();
   }
 
   @Override
   public void autonomousPeriodic() 
   {
     super.autonomousPeriodic();
+
+    SelectedAutonomous.getSelected().AutoLoop();
+  }
+
+  @Override
+  public void autonomousExit()
+  {
+    SelectedAutonomous.getSelected().AutoEnd();
   }
 
   @Override
@@ -98,6 +119,8 @@ public class Robot extends RobotBase
 
     swerve.SetHeadingOffset(Math.PI / 2);
 
+    AddAutonomous(new AutonomousBase("cross-lne-from-center", 1, 1));
+
     //ClawMotor = new MotorController(MotorController.MotorControllerType.SparkMax, 15, true);
     //ClawMotor.SetBrake(true);
   }
@@ -119,5 +142,9 @@ public class Robot extends RobotBase
     Input.SetAxisDeadzone("Horizontal", 0.15);
     Input.SetAxisDeadzone("Vertical", 0.15);
     Input.SetAxisDeadzone("Rotation", 0.15);*/
+  }
+
+  public void AddAutonomous(AutonomousBase auto) {
+    AutonomousModes.put(auto.GetName(), auto);
   }
 }
