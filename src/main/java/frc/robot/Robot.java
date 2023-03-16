@@ -12,7 +12,7 @@ import frc.robot.SubSystems.AprilTag;
 import java.util.HashMap;
 import java.util.List;
 
-public class Robot extends RobotBase 
+public class Robot extends RobotBase
 {
   //public MotorController ClawMotor;
 
@@ -20,7 +20,7 @@ public class Robot extends RobotBase
   public HashMap<String, AutonomousBase> AutonomousModes = new HashMap<>();
 
   @Override
-  public void robotInit() 
+  public void robotInit()
   {
     AprilTag.GenerateTags();
     super.robotInit();
@@ -31,13 +31,13 @@ public class Robot extends RobotBase
   }
 
   @Override
-  public void robotPeriodic() 
+  public void robotPeriodic()
   {
     super.robotPeriodic();
   }
 
   @Override
-  public void autonomousInit() 
+  public void autonomousInit()
   {
     super.autonomousInit();
 
@@ -45,7 +45,7 @@ public class Robot extends RobotBase
   }
 
   @Override
-  public void autonomousPeriodic() 
+  public void autonomousPeriodic()
   {
     super.autonomousPeriodic();
 
@@ -59,13 +59,13 @@ public class Robot extends RobotBase
   }
 
   @Override
-  public void teleopInit() 
+  public void teleopInit()
   {
     super.teleopInit();
   }
 
   @Override
-  public void teleopPeriodic() 
+  public void teleopPeriodic()
   {
     super.teleopPeriodic();
 
@@ -73,37 +73,37 @@ public class Robot extends RobotBase
   }
 
   @Override
-  public void disabledInit() 
+  public void disabledInit()
   {
     super.disabledInit();
   }
 
   @Override
-  public void disabledPeriodic() 
+  public void disabledPeriodic()
   {
     super.disabledPeriodic();
   }
 
   @Override
-  public void testInit() 
+  public void testInit()
   {
     super.testInit();
   }
 
   @Override
-  public void testPeriodic() 
+  public void testPeriodic()
   {
     super.testPeriodic();
   }
 
   @Override
-  public void simulationInit() 
+  public void simulationInit()
   {
     super.simulationInit();
   }
 
   @Override
-  public void simulationPeriodic() 
+  public void simulationPeriodic()
   {
     super.simulationPeriodic();
   }
@@ -120,7 +120,7 @@ public class Robot extends RobotBase
 
     swerve.SetHeadingOffset(Math.PI / 2);
 
-    AddAutonomous(new SimpleAuto("cross-line-from-center", .5, 2));
+    AddAutonomous(new SimpleAuto("cross-line", .5, 2));
 
     //ClawMotor = new MotorController(MotorController.MotorControllerType.SparkMax, 15, true);
     //ClawMotor.SetBrake(true);

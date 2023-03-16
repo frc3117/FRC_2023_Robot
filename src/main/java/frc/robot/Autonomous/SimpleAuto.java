@@ -11,51 +11,53 @@ public class SimpleAuto extends AutonomousBase
     {
         _name = name;
         _speed = speed;
-        _time = time;       
+        _time = time;
     }
     private Swerve _swerve;
-    
+
     private String _name;
     private double _speed;
     private double _time;
 
 
     @Override
-    public String GetName() 
+    public String GetName()
     {
         return _name;
     }
 
     @Override
-    public void StartAuto() 
+    public void StartAuto()
     {
         _swerve = Robot.Instance.GetComponent("Swerve");
-
-
-        
     }
 
     @Override
-    public void AutoLoop() 
+    public void AutoLoop()
     {
         var OverrideValue = 0.;
 
-        if (Timer.GetTimeSinceStart() <= _time)
-        {
-            OverrideValue = _speed;
+        switch (GetName()) {
+            case "cross-line":
+                if (Timer.GetTimeSinceStart() <= 2) {
+                    _swerve.OverrideRotationAxis(0);
+                    OverrideValue = 0.5;
+                }
+            break;
         }
-        else
+
+        if (Timer.GetTimeSinceStart() > _time)
         {
             OverrideValue = 0;
         }
-        
-        _swerve.OverrideVerticalAxis(OverrideValue); 
+
+        _swerve.OverrideVerticalAxis(OverrideValue);
     }
 
     @Override
     public void AutoEnd() {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
 }
