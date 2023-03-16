@@ -103,7 +103,7 @@
     "segment0Encoder": {
       "type": "DutyCycle",
       "id": 0,
-      "offset": 0.55,
+      "offset": 0,
       "inverted": false
     },
     "segment1Motor_0": {
@@ -115,7 +115,7 @@
     "segment1Encoder": {
       "type": "DutyCycle",
       "id": 1,
-      "offset": 0.53,
+      "offset": 0,
       "inverted": false
     },
     "segment2Motor_0": {
@@ -127,7 +127,7 @@
     "segment2Encoder": {
       "type": "DutyCycle",
       "id": 2,
-      "offset": 0.38,
+      "offset": 0,
       "inverted": false
     },
     "twistMotor": {
@@ -141,6 +141,12 @@
       "id": 4,
       "offset": 0,
       "inverted": false
+    },
+    "feederMotor": {
+      "type": "CANSparkMax",
+      "id": 15,
+      "inverted": true,
+      "brake": true
     }
   },
   "inputs": {
@@ -168,33 +174,53 @@
       "negativeInverted": false,
       "deadzone": 0.15
     },
-    "RotatingBase": {
-      "type": "Axis",
-      "positive": "1.XboxAxis.LEFT_TRIGGER",
-      "positiveInverted": false,
-      "negative": "1.XboxAxis.RIGHT_TRIGGER",
-      "negativeInverted": false,
-      "deadzone": 0.15
-    },
-    "Segment0": {
-      "type": "Axis",
-      "positive": "1.XboxAxis.LEFTY",
-      "positiveInverted": false,
-      "negative": "",
-      "negativeInverted": false,
-      "deadzone": 0.15
-    },
-    "Segment1": {
-      "type": "Axis",
-      "positive": "1.XboxAxis.RIGHTX",
-      "positiveInverted": false,
-      "negative": "",
-      "negativeInverted": false,
-      "deadzone": 0.15
-    },
-    "SaveButton": {
+    "PrintPose": {
       "type": "Button",
       "positive": "0.XboxButton.A"
+    },
+    "ResetPose": {
+      "type": "Button",
+      "positive": "0.XboxButton.B"
+    },
+    "SetPose": {
+      "type": "Button",
+      "positive": "0.XboxButton.Y"
+    },
+    "TestPose": {
+      "type": "Button",
+      "positive": "0.XboxButton.X"
+    },
+    "Intake": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_1"
+    },
+    "Hold": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_2"
+    },
+    "ConeHigh": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_7"
+    },
+    "ConeMid": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_9"
+    },
+    "ConeLow": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_11"
+    },
+    "CubeHigh": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_8"
+    },
+    "CubeMid": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_10"
+    },
+    "CubeLow": {
+      "type": "Button",
+      "positive": "1.GenericInput.INPUT_12"
     }
   },
   "controllers": {
@@ -205,18 +231,33 @@
       "kd": 0
     },
     "segment0PID": {
-      "type": "PID",
-      "kp": 0,
+      "type": "AntiWindupPID",
+      "kp": 0.3,
       "ki": 0,
-      "kd": 0
+      "kd": 0,
+      "resetOnFlip": false,
+      "minIntegral": -9999,
+      "maxIntegral": 9999
     },
     "segment1PID": {
-      "type": "PID",
-      "kp": 0,
+      "type": "AntiWindupPID",
+      "kp": 0.4,
       "ki": 0,
-      "kd": 0
+      "kd": 0,
+      "resetOnFlip": false,
+      "minIntegral": -9999,
+      "maxIntegral": 9999
     },
     "segment2PID": {
+      "type": "AntiWindupPID",
+      "kp": 0.5,
+      "ki": 0,
+      "kd": 0,
+      "resetOnFlip": false,
+      "minIntegral": -9999,
+      "maxIntegral": 9999
+    },
+    "twistPID": {
       "type": "PID",
       "kp": 0,
       "ki": 0,
@@ -353,15 +394,89 @@
       }
     ]
   },
+  "feeder": {
+    "motor": "feederMotor"
+  },
   "poses": {
-    "test": {
-      "mode": "World",
+    "up": {
       "angles": [
-        0,
-        0,
-        0,
-        0,
-        0
+        "*",
+        "@w_3.1415",
+        "@w_3.1415",
+        "@w_3.1515",
+        "*"
+      ]
+    },
+    "ground-cube": {
+      "angles": [
+        "*",
+        "@w_2.73",
+        "@w_4.60",
+        "@w_5.74",
+        "*"
+      ]
+    },
+    "ground-cube-back": {
+      "angles": [
+        "*",
+        "@w_3.65",
+        "@w_1.68",
+        "@w_0.54",
+        "*"
+      ]
+    },
+    "stowed": {
+      "angles": [
+        "*",
+        "@w_2.42",
+        "@w_3.89",
+        "@w_5.79",
+        "*"
+      ]
+    },
+    "human-player-shelf": {
+      "angles": [
+        "*",
+        "@w_2.49",
+        "@w_3.6",
+        "@w_4.78",
+        "*"
+      ]
+    },
+    "cube-high": {
+      "angles": [
+        "*",
+        "@w_3.36",
+        "@w_3.85",
+        "@w_4.74",
+        "*"
+      ]
+    },
+    "cube-mid": {
+      "angles": [
+        "*",
+        "@w_2.36",
+        "@w_4.17",
+        "@w_4.81",
+        "*"
+      ]
+    },
+    "cone-high": {
+      "angles": [
+        "*",
+        "@w_3.76",
+        "@w_3.95",
+        "@w_4.39",
+        "*"
+      ]
+    },
+    "cone-mid": {
+      "angles": [
+        "*",
+        "@w_2.61",
+        "@w_4.19",
+        "@w_4.64",
+        "*"
       ]
     }
   }
