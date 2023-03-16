@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Autonomous.AutonomousBase;
+import frc.robot.Autonomous.SimpleAuto;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.MotorController;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
@@ -119,7 +120,7 @@ public class Robot extends RobotBase
 
     swerve.SetHeadingOffset(Math.PI / 2);
 
-    AddAutonomous(new AutonomousBase("cross-lne-from-center", 1, 1));
+    AddAutonomous(new SimpleAuto("cross-line-from-center", .5, 2));
 
     //ClawMotor = new MotorController(MotorController.MotorControllerType.SparkMax, 15, true);
     //ClawMotor.SetBrake(true);
