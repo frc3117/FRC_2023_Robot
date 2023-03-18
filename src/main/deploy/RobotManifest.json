@@ -186,7 +186,7 @@
       "type": "Button",
       "positive": "0.XboxButton.B"
     },
-    "SetPose": {
+    "ReverseControls": {
       "type": "Button",
       "positive": "0.XboxButton.Y"
     },
