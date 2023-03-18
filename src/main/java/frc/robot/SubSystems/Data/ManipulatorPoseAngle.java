@@ -1,46 +1,54 @@
 package frc.robot.SubSystems.Data;
 
 public class ManipulatorPoseAngle {
-    public ManipulatorPoseAngle(ManupulatorPoseAngleMode mode) {
+    public ManipulatorPoseAngle(ManipulatorPoseAngleMode mode) {
         this(mode, 0);
     }
-    public ManipulatorPoseAngle(ManupulatorPoseAngleMode mode, double angle) {
+    public ManipulatorPoseAngle(ManipulatorPoseAngleMode mode, double angle) {
         Mode = mode;
         Angle = angle;
     }
 
-    public ManupulatorPoseAngleMode Mode;
+    public ManipulatorPoseAngleMode Mode;
     public double Angle;
 
     public static ManipulatorPoseAngle Parse(String str) {
         var split = str.split("_", 2);
 
-        ManupulatorPoseAngleMode mode;
+        ManipulatorPoseAngleMode mode;
         var angle = split.length == 1 ? 0. : Double.parseDouble(split[1]);
         switch (split[0]) {
             case "*":
-                mode = ManupulatorPoseAngleMode.Any;
+                mode = ManipulatorPoseAngleMode.Any;
                 break;
 
             case "=l":
-                mode = ManupulatorPoseAngleMode.HoldLocal;
+                mode = ManipulatorPoseAngleMode.HoldLocal;
                 break;
 
             case "=w":
-                mode = ManupulatorPoseAngleMode.HoldWorld;
+                mode = ManipulatorPoseAngleMode.HoldWorld;
                 break;
 
             case ">":
-                mode = ManupulatorPoseAngleMode.Follow;
+                mode = ManipulatorPoseAngleMode.Follow;
                 break;
 
             case "@l":
-                mode = ManupulatorPoseAngleMode.TargetLocal;
+                mode = ManipulatorPoseAngleMode.TargetLocal;
                 break;
 
             case "@w":
             default:
-                mode = ManupulatorPoseAngleMode.TargetWorld;
+                mode = ManipulatorPoseAngleMode.TargetWorld;
+                break;
+
+            case "dl":
+                mode = ManipulatorPoseAngleMode.DeltaLocal;
+                break;
+
+            case "dw":
+                mode = ManipulatorPoseAngleMode.DeltaWorld;
                 break;
         }
 
@@ -56,12 +64,14 @@ public class ManipulatorPoseAngle {
         return arr;
     }
 
-    public enum ManupulatorPoseAngleMode {
+    public enum ManipulatorPoseAngleMode {
         Any,
         HoldLocal,
         HoldWorld,
         Follow,
         TargetLocal,
-        TargetWorld
+        TargetWorld,
+        DeltaLocal,
+        DeltaWorld
     }
 }

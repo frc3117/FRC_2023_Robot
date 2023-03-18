@@ -3,7 +3,6 @@ package frc.robot.SubSystems;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
-import frc.robot.Library.FRC_3117_Tools.Component.Data.InputManager;
 import frc.robot.Library.FRC_3117_Tools.Interface.Component;
 import frc.robot.Library.FRC_3117_Tools.Interface.FromManifest;
 import frc.robot.Library.FRC_3117_Tools.Manifest.RobotManifest;
@@ -34,8 +33,11 @@ public class Feeder implements Component, Sendable {
 
     private boolean _holdingObject = true;
 
-    private boolean _holdingCone;
-    private boolean _holdingCube;
+    private boolean _intakePressedLast = false;
+    private boolean _overrideIntake = false;
+
+    private boolean _holdPressedLast = false;
+    private boolean _overrideHold = false;
 
     @Override
     public void Awake() {
@@ -44,7 +46,11 @@ public class Feeder implements Component, Sendable {
 
     @Override
     public void Init() {
+        _intakePressedLast = false;
+        _overrideIntake = false;
 
+        _holdPressedLast = false;
+        _overrideHold = false;
     }
 
     @Override
@@ -60,34 +66,51 @@ public class Feeder implements Component, Sendable {
         var motorOutput = 0.;
 
         if (_holdingObject) {
-            if (InputManager.GetButtonUp("Intake"))
+            if (IntakePressedUp())
                 _holdingObject = false;
-            else if (Input.GetButton("Intake"))
-                motorOutput = -0.25;
+            else if (IntakePressed())
+                motorOutput = -0.30;
             else
-                motorOutput = 0.1;//HoldEquation(Data.HoldConeAmplitude, Data.HoldConeFreq, Data.HoldConeCutoff);
+                motorOutput = 0.09;//HoldEquation(Data.HoldConeAmplitude, Data.HoldConeFreq, Data.HoldConeCutoff);
         }
         else
         {
-            if (Input.GetButton("Intake"))
-                motorOutput = 0.50;
+            if (IntakePressed())
+                motorOutput = 0.47;
             else if (Input.GetButton("Hold"))
                 _holdingObject = true;
         }
 
-        /*if (Input.GetButton("Intake"))
-            motorOutput = 0.5;
-        else if (_holdingCone)
-            motorOutput = HoldEquation(Data.HoldConeAmplitude, Data.HoldConeFreq, Data.HoldConeCutoff);
-        else if (_holdingCube)
-            motorOutput = HoldEquation(Data.HoldCubeAmplitude, Data.HoldCubeFreq, Data.HoldCubeCutoff);*/
-
         Data.Motor.Set(motorOutput);
+
+        _intakePressedLast = IntakePressed();
+        _overrideIntake = false;
+
+        _holdPressedLast = HoldPressed();
+        _overrideHold = false;
     }
 
     @Override
     public void Print() {
 
+    }
+
+    public boolean IntakePressed() {
+        return Input.GetButton("Intake") || _overrideIntake;
+    }
+    public boolean IntakePressedUp() {
+        return _intakePressedLast && !IntakePressed();
+    }
+
+    public boolean HoldPressed() {
+        return Input.GetButton("Hold") || _overrideHold;
+    }
+
+    public void OverrideIntake() {
+        _overrideIntake = true;
+    }
+    public void OverrideHold() {
+        _overrideHold = true;
     }
 
     private double HoldEquation(double amplitude, double frequency, double cutoff) {
@@ -97,6 +120,8 @@ public class Feeder implements Component, Sendable {
 
     @Override
     public void initSendable(SendableBuilder builder) {
+        builder.addBooleanProperty("IsHoldingObject", () -> _holdingObject, null);
+
         builder.addDoubleProperty("ConeHold/Amplitude", () -> Data.HoldConeAmplitude, (val) -> Data.HoldConeAmplitude = val);
         builder.addDoubleProperty("ConeHold/Frequency", () -> Data.HoldConeAmplitude, (val) -> Data.HoldConeAmplitude = val);
         builder.addDoubleProperty("ConeHold/Cutoff", () -> Data.HoldConeAmplitude, (val) -> Data.HoldConeAmplitude = val);

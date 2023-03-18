@@ -4,16 +4,11 @@ import frc.robot.Library.FRC_3117_Tools.Component.Swerve;
 import frc.robot.Robot;
 
 public class SimpleOdometryAuto extends AutonomousBase {
-    public SimpleOdometryAuto() {
-
+    public SimpleOdometryAuto(String name) {
+        super(name);
     }
 
     private Swerve _swerve;
-
-    @Override
-    public String GetName() {
-        return null;
-    }
 
     @Override
     public void StartAuto() {
@@ -23,7 +18,6 @@ public class SimpleOdometryAuto extends AutonomousBase {
     @Override
     public void AutoLoop() {
         var overrideValue = 0;
-
 
         _swerve.OverrideVerticalAxis(overrideValue);
     }

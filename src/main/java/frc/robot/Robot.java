@@ -1,24 +1,25 @@
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Autonomous.AutonomousBase;
+import frc.robot.Autonomous.EmptyAuto;
+import frc.robot.Autonomous.GamePieceAuto;
 import frc.robot.Autonomous.SimpleAuto;
+import frc.robot.Game.GamePiece;
+import frc.robot.Game.GridLevel;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
-import frc.robot.Library.FRC_3117_Tools.Component.Data.MotorController;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
 import frc.robot.Library.FRC_3117_Tools.Component.Swerve;
 import frc.robot.SubSystems.AprilTag;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class Robot extends RobotBase
 {
   //public MotorController ClawMotor;
+
+  public Swerve Swerve;
 
   public SendableChooser<AutonomousBase> SelectedAutonomous = new SendableChooser<>();
   public HashMap<String, AutonomousBase> AutonomousModes = new HashMap<>();
@@ -29,21 +30,10 @@ public class Robot extends RobotBase
     AprilTag.GenerateTags();
     super.robotInit();
 
-    try {
-      for (var cam : UsbCamera.enumerateUsbCameras())
-      {
-        System.out.println(cam.name);
-        CameraServer.startAutomaticCapture(cam.dev);
-      }
+    //var cam = CameraServer.startAutomaticCapture();
+    //cam.setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 640, 360, 30));
 
-    }
-    catch (Exception e) {}
-
-    for (var mode : AutonomousModes.entrySet()) {
-      SelectedAutonomous.addOption(mode.getKey(), mode.getValue());
-      System.out.println(mode.getKey());
-    }
-
+    SetDefaultAuto(new EmptyAuto("Nothing"));
     SmartDashboard.putData("Auto Selector", SelectedAutonomous);
   }
 
@@ -84,6 +74,11 @@ public class Robot extends RobotBase
   @Override
   public void teleopPeriodic()
   {
+    if (Input.GetButton("SwerveSlow"))
+      Swerve.SetSpeed(0.5);
+    else
+      Swerve.SetSpeed(1);
+
     super.teleopPeriodic();
 
     //ClawMotor.Set(Input.GetAxis("Claw") * 0.5);
@@ -128,16 +123,21 @@ public class Robot extends RobotBase
   @Override
   public void CreateComponentInstance()
   {
-    Swerve swerve = GetComponent("SwerveDrive");
+    Swerve = GetComponent("SwerveDrive");
 
-    swerve.SetPIDGain(0, 0.5, 0, 0);
-    swerve.SetPIDGain(1, 0.5, 0, 0);
-    swerve.SetPIDGain(2, 0.5, 0, 0);
-    swerve.SetPIDGain(3, 0.5, 0, 0);
+    Swerve.SetPIDGain(0, 0.5, 0, 0);
+    Swerve.SetPIDGain(1, 0.5, 0, 0);
+    Swerve.SetPIDGain(2, 0.5, 0, 0);
+    Swerve.SetPIDGain(3, 0.5, 0, 0);
 
-    swerve.SetHeadingOffset(Math.PI / 2);
+    Swerve.SetHeadingOffset(Math.PI / 2);
 
-    AddAutonomous(new SimpleAuto("cross-line", .5, 3));
+    AddAutonomous(new SimpleAuto("cross-line", .5, 5));
+    AddAutonomous(new SimpleAuto("cross-line-balance", .5, 7));
+
+    AddAutonomous(new GamePieceAuto("cube-low-cross", GamePiece.Cube, GridLevel.Low));
+    AddAutonomous(new GamePieceAuto("cube-mid-cross", GamePiece.Cube, GridLevel.Mid));
+    AddAutonomous(new GamePieceAuto("cube-high-cross", GamePiece.Cube, GridLevel.High));
 
     //ClawMotor = new MotorController(MotorController.MotorControllerType.SparkMax, 15, true);
     //ClawMotor.SetBrake(true);
@@ -162,7 +162,12 @@ public class Robot extends RobotBase
     Input.SetAxisDeadzone("Rotation", 0.15);*/
   }
 
+  public void SetDefaultAuto(AutonomousBase auto) {
+    SelectedAutonomous.setDefaultOption(auto.GetName(), auto);
+    AutonomousModes.put(auto.GetName(), auto);
+  }
   public void AddAutonomous(AutonomousBase auto) {
+    SelectedAutonomous.addOption(auto.GetName(), auto);
     AutonomousModes.put(auto.GetName(), auto);
   }
 }

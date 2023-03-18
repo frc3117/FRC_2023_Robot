@@ -43,7 +43,7 @@
     "swerveHeadingEncoder_RL": {
       "type": "AnalogInput",
       "id": 2,
-      "offset": 0.4921,
+      "offset": 0.4973,
       "inverted": false
     },
     "swerveHeadingMotor_RL": {
@@ -102,7 +102,7 @@
     },
     "segment0Encoder": {
       "type": "DutyCycle",
-      "id": 0,
+      "id": 3,
       "offset": 0,
       "inverted": false
     },
@@ -153,7 +153,7 @@
     "Horizontal": {
       "type": "Axis",
       "positive": "0.XboxAxis.LEFTX",
-      "positiveInverted": false,
+      "positiveInverted": true,
       "negative": "",
       "negativeInverted": false,
       "deadzone": 0.15
@@ -161,7 +161,7 @@
     "Vertical": {
       "type":  "Axis",
       "positive": "0.XboxAxis.LEFTY",
-      "positiveInverted": true,
+      "positiveInverted": false,
       "negative": "",
       "negativeInverted": false,
       "deadzone": 0.15
@@ -173,6 +173,10 @@
       "negative": "0.XboxAxis.LEFT_TRIGGER",
       "negativeInverted": false,
       "deadzone": 0.15
+    },
+    "SwerveSlow": {
+      "type": "Button",
+      "positive": "0.XboxButton.A"
     },
     "PrintPose": {
       "type": "Button",
@@ -444,9 +448,9 @@
     "stowed": {
       "angles": [
         "*",
-        "@w_2.42",
-        "@w_3.89",
-        "@w_5.79",
+        "@w_2.38",
+        "@w_3.71",
+        "@w_5.62",
         "*"
       ]
     },
@@ -480,18 +484,27 @@
     "cone-high": {
       "angles": [
         "*",
-        "@w_3.76",
-        "@w_3.95",
-        "@w_4.39",
+        "@w_3.89",
+        "@w_4.05",
+        "@w_4.24",
         "*"
       ]
     },
     "cone-mid": {
       "angles": [
         "*",
-        "@w_2.61",
-        "@w_4.19",
-        "@w_4.64",
+        "@w_2.94",
+        "@w_4.37",
+        "@w_4.65",
+        "*"
+      ]
+    },
+    "cone-delivery-offset": {
+      "angles": [
+        "*",
+        "*",
+        "dw_-0.5",
+        "dw_0.5",
         "*"
       ]
     }

@@ -134,6 +134,8 @@ public class Manipulator implements Component, Sendable {
     private String _poseName = "";
 
     private boolean _isStowed = true;
+    private int _currentConePose = -1;
+
     private boolean _killed = false;
 
     @Override
@@ -159,34 +161,56 @@ public class Manipulator implements Component, Sendable {
         // Do a forward kinematic loop to update the positions
         UpdatePositions();
 
-        if (ToggleStowedPressed())
+        if (ToggleStowedPressed()) {
             ToggleStowed();
+        }
         else if (HumanPlayerShelfPressed()) {
             SetPose("human-player-shelf");
+            _currentConePose = -1;
             SetStowedState(false);
         }
         if (InputManager.GetButtonDown("CubeHigh")) {
             SetPose("cube-high");
+            _currentConePose = -1;
             SetStowedState(false);
         }
         else if (InputManager.GetButtonDown("CubeMid")) {
             SetPose("cube-mid");
+            _currentConePose = -1;
             SetStowedState(false);
         }
         else if (InputManager.GetButtonDown("CubeLow")) {
             SetPose("ground-cube");
+            _currentConePose = -1;
             SetStowedState(false);
         }
         else if (InputManager.GetButtonDown("ConeHigh")) {
-            SetPose("cone-high");
+            if (_currentConePose == 2) {
+                SetPose("cone-delivery-offset");
+                _currentConePose = -1;
+            }
+            else {
+                SetPose("cone-high");
+                _currentConePose = 2;
+            }
+
             SetStowedState(false);
         }
         else if (InputManager.GetButtonDown("ConeMid")) {
-            SetPose("cone-mid");
+            if (_currentConePose == 1) {
+                SetPose("cone-delivery-offset");
+                _currentConePose = -1;
+            }
+            else {
+                SetPose("cone-mid");
+                _currentConePose = 1;
+            }
+
             SetStowedState(false);
         }
         else if (InputManager.GetButtonDown("ConeLow")) {
             SetPose("ground-cube");
+            _currentConePose = -1;
             SetStowedState(false);
         }
 
@@ -297,13 +321,15 @@ public class Manipulator implements Component, Sendable {
 
     public void SetStowed() {
         SetStowedState(true);
-
         SetPose("stowed");
+
+        _currentConePose = -1;
     }
     public void SetGround() {
         SetStowedState(false);
-
         SetPose("ground-cube");
+
+        _currentConePose = -1;
     }
     public void ToggleStowed() {
         _isStowed = !_isStowed;
@@ -410,6 +436,16 @@ public class Manipulator implements Component, Sendable {
                 case TargetWorld:
                     mode = 1;
                     target = angle.Angle;
+                    break;
+
+                case DeltaLocal:
+                    mode = 0;
+                    target = GetSegmentLocalAngle(i) + angle.Angle;
+                    break;
+
+                case DeltaWorld:
+                    mode = 1;
+                    target = GetSegmentWorldAngle(i) + angle.Angle;
                     break;
             }
 
