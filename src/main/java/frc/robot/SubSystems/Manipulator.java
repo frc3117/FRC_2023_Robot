@@ -1,6 +1,5 @@
 package frc.robot.SubSystems;
 
-import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -307,7 +306,7 @@ public class Manipulator implements Component, Sendable {
 
         // Apply the values to the motors
         Data.Segments.get(0).Motors.Set(0);
-        Data.Segments.get(4).Motors.Set(0);
+        //Data.Segments.get(4).Motors.Set(0);
     }
 
     @Override
@@ -375,7 +374,7 @@ public class Manipulator implements Component, Sendable {
         {
             var localAngle = _jointsAngles[i];
 
-            if (i == 0 || i == Data.Segments.size() - 1)
+            if (i == 0)
             {
                 _joinsWorldAngles[i] = localAngle;
                 continue;
@@ -401,7 +400,7 @@ public class Manipulator implements Component, Sendable {
         SetPose(ManipulatorPose.Poses.get(poseName));
     }
     public void SetPose(ManipulatorPose pose) {
-        for (var i = 0; i < pose.Angles.length; i++) {
+        for (var i = 0; i < Data.Segments.size(); i++) {
             var angle = pose.Angles[i];
 
             var mode = 0;

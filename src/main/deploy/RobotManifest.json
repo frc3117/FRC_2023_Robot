@@ -7,7 +7,7 @@
     "swerveHeadingEncoder_FR": {
       "type": "AnalogInput",
       "id": 0,
-      "offset": 0.5552,
+      "offset": 0.2344,
       "inverted": false
     },
     "swerveHeadingMotor_FR": {
@@ -25,7 +25,7 @@
     "swerveHeadingEncoder_RR": {
       "type": "AnalogInput",
       "id": 1,
-      "offset": 0.8189,
+      "offset": 0.3569,
       "inverted": false
     },
     "swerveHeadingMotor_RR": {
@@ -43,7 +43,7 @@
     "swerveHeadingEncoder_RL": {
       "type": "AnalogInput",
       "id": 2,
-      "offset": 0.4973,
+      "offset": 0.8524,
       "inverted": false
     },
     "swerveHeadingMotor_RL": {
@@ -61,7 +61,7 @@
     "swerveHeadingEncoder_FL": {
       "type": "AnalogInput",
       "id": 3,
-      "offset": 0.7365,
+      "offset": 0.7382,
       "inverted": false
     },
     "swerveHeadingMotor_FL": {
@@ -109,7 +109,7 @@
     "segment1Motor_0": {
       "type": "CANSparkMax",
       "id": 11,
-      "inverted": false,
+      "inverted": true,
       "brake": false
     },
     "segment1Encoder": {
@@ -121,7 +121,7 @@
     "segment2Motor_0": {
       "type": "CANSparkMax",
       "id": 12,
-      "inverted": false,
+      "inverted": true,
       "brake": false
     },
     "segment2Encoder": {
@@ -153,10 +153,11 @@
     "Horizontal": {
       "type": "Axis",
       "positive": "0.XboxAxis.LEFTX",
-      "positiveInverted": true,
+      "positiveInverted": false,
       "negative": "",
       "negativeInverted": false,
-      "deadzone": 0.15
+      "deadzone": 0.02,
+      "axisTransform": "Pow"
     },
     "Vertical": {
       "type":  "Axis",
@@ -164,7 +165,8 @@
       "positiveInverted": false,
       "negative": "",
       "negativeInverted": false,
-      "deadzone": 0.15
+      "deadzone": 0.02,
+      "axisTransform": "Pow"
     },
     "Rotation": {
       "type": "Axis",
@@ -172,7 +174,8 @@
       "positiveInverted": false,
       "negative": "0.XboxAxis.LEFT_TRIGGER",
       "negativeInverted": false,
-      "deadzone": 0.15
+      "deadzone": 0.02,
+      "axisTransform": "Pow"
     },
     "SwerveSlow": {
       "type": "Button",
@@ -396,21 +399,6 @@
         "minLimitSwitch": 4,
         "maxLimitSwitch": 5,
         "keepAngle": true
-      },
-      {
-        "encoder": "twistEncoder",
-        "positiveMotors": [
-          "twistMotor"
-        ],
-        "negativeMotors": [],
-        "DH": {
-          "theta": 0,
-          "alpha": 0,
-          "d": 0,
-          "r": 0
-        },
-        "controller": "twistPID",
-        "keepAngle": false
       }
     ]
   },
@@ -448,9 +436,9 @@
     "stowed": {
       "angles": [
         "*",
-        "@w_2.38",
+        "@w_2.54",
         "@w_3.71",
-        "@w_5.62",
+        "@w_5.78",
         "*"
       ]
     },

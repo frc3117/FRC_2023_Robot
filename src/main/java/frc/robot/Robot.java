@@ -6,20 +6,21 @@ import frc.robot.Autonomous.AutonomousBase;
 import frc.robot.Autonomous.EmptyAuto;
 import frc.robot.Autonomous.GamePieceAuto;
 import frc.robot.Autonomous.SimpleAuto;
-import frc.robot.Game.GamePiece;
-import frc.robot.Game.GridLevel;
 import frc.robot.Library.FRC_3117_Tools.Component.Data.Input;
 import frc.robot.Library.FRC_3117_Tools.RobotBase;
 import frc.robot.Library.FRC_3117_Tools.Component.Swerve;
 import frc.robot.SubSystems.AprilTag;
+import frc.robot.SubSystems.HoldAngle;
+import frc.robot.SubSystems.LED;
 
 import java.util.HashMap;
 
 public class Robot extends RobotBase
 {
-  //public MotorController ClawMotor;
+  public static LED Led;
 
   public Swerve Swerve;
+  public HoldAngle Hold;
 
   public SendableChooser<AutonomousBase> SelectedAutonomous = new SendableChooser<>();
   public HashMap<String, AutonomousBase> AutonomousModes = new HashMap<>();
@@ -27,6 +28,8 @@ public class Robot extends RobotBase
   @Override
   public void robotInit()
   {
+    //Led = new LED(new CANifier(30));
+
     AprilTag.GenerateTags();
     super.robotInit();
 
@@ -74,14 +77,20 @@ public class Robot extends RobotBase
   @Override
   public void teleopPeriodic()
   {
-    if (Input.GetButton("SwerveSlow"))
-      Swerve.SetSpeed(0.5);
-    else
+    if (Input.GetButton("SwerveSlow")) { //(InputManager.GetButtonDown("SwerveSlow")) {
+        //Hold.SetHeadingTarget(0);
+        //Hold.StartHold();
+
+      Swerve.SetSpeed(0.2);
+      Swerve.SetRotationSpeed(0.2);
+    }
+    else { //if (InputManager.GetButtonUp("SwerveSlow")) {
+      //Hold.StopHold();
       Swerve.SetSpeed(1);
+      Swerve.SetRotationSpeed(1);
+    }
 
     super.teleopPeriodic();
-
-    //ClawMotor.Set(Input.GetAxis("Claw") * 0.5);
   }
 
   @Override
@@ -130,25 +139,26 @@ public class Robot extends RobotBase
     Swerve.SetPIDGain(2, 0.5, 0, 0);
     Swerve.SetPIDGain(3, 0.5, 0, 0);
 
-    Swerve.SetHeadingOffset(Math.PI / 2);
+    Swerve.SetHeadingOffset(-Math.PI / 2);
 
     AddAutonomous(new SimpleAuto("cross-line", .5, 5));
     AddAutonomous(new SimpleAuto("cross-line-balance", .5, 7));
 
-    AddAutonomous(new GamePieceAuto("cube-low-cross", GamePiece.Cube, GridLevel.Low));
-    AddAutonomous(new GamePieceAuto("cube-mid-cross", GamePiece.Cube, GridLevel.Mid));
-    AddAutonomous(new GamePieceAuto("cube-high-cross", GamePiece.Cube, GridLevel.High));
+    for (var a : GamePieceAuto.GenerateAllAuto()) {
+      AddAutonomous(a);
+    }
 
-    //ClawMotor = new MotorController(MotorController.MotorControllerType.SparkMax, 15, true);
-    //ClawMotor.SetBrake(true);
+    Hold = new HoldAngle();
+    AddComponent("HoldAngle", Hold);
+
+    /*AddAutonomous(new GamePieceAuto("cube-low-cross", GamePiece.Cube, GridLevel.Low));
+    AddAutonomous(new GamePieceAuto("cube-mid-cross", GamePiece.Cube, GridLevel.Mid));
+    AddAutonomous(new GamePieceAuto("cube-high-cross", GamePiece.Cube, GridLevel.High));*/
   }
 
   @Override
   public void CreateInput()
   {
-    //Input.CreateAxis("Claw", 0, Input.XboxAxis.RIGHTY, false);
-    //Input.SetAxisDeadzone("Claw", 0.15);
-
     /*
     //Swerve
     Input.CreateAxis("Horizontal", 0, XboxAxis.LEFTX, false);
